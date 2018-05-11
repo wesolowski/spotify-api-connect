@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+    web:
+        image: matthiasnoback/php_workshop_tools_base
+        volumes:
+            - ./:/opt
+        ports:
+            - 80:8080
+
+    devtools:
+        image: matthiasnoback/php_workshop_tools_base
+        volumes:
+            - ./:/opt
+        depends_on:
+            - web
