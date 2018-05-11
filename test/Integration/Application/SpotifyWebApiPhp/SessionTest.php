@@ -12,9 +12,9 @@ class SessionTest extends TestCase
     public function testGetAuthorizeUrl()
     {
         $session = new Session(
-            $_ENV['CLIENT_ID'],
-            $_ENV['CLIENT_SECRET'],
-            $_ENV['REDIRECT_URI']
+            getenv('CLIENT_ID'),
+            getenv('CLIENT_SECRET'),
+            getenv('REDIRECT_URI')
         );
         $redirectUrl = $session->getAuthorizeUrl([]);
 
