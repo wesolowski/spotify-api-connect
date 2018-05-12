@@ -8,15 +8,26 @@ use SpotifyApiConnect\Application\SpotifyWebApiPhp\Session;
 
 class SessionTest extends TestCase
 {
+    /**
+     * @var Session
+     */
+    private $session;
 
-    public function testGetAuthorizeUrl()
+    protected function setUp()
     {
-        $session = new Session(
+        parent::setUp();
+
+        $this->session = new Session(
             getenv('CLIENT_ID'),
             getenv('CLIENT_SECRET'),
             getenv('REDIRECT_URI')
         );
-        $redirectUrl = $session->getAuthorizeUrl([]);
+    }
+
+
+    public function testGetAuthorizeUrl()
+    {
+        $redirectUrl = $this->session->getAuthorizeUrl([]);
 
         $this->assertNotEmpty($redirectUrl, 'authorize url from spotify is empty');
 
@@ -32,6 +43,12 @@ class SessionTest extends TestCase
         $this->assertSame('code', $info['response_type']);
         $this->assertSame('http://localhost/', $info['redirect_uri']);
         $this->assertTrue(isset($info['client_id']));
+    }
+
+    public function testRefreshAccessToken()
+    {
+        $this->assertTrue($this->session->refreshAccessToken(getenv('REFRESH_TOKEN')));
+        $this->assertNotEmpty($this->session->getAccessToken());
     }
 
 }
