@@ -17,4 +17,9 @@ script:
   - vendor/bin/phpunit
 
 after_script:
+ - pwd 
+ - ls -la vendor/bin
+ - ls -la;
+ - ls ./vendor/bin/
+ - php -v
  - php vendor/bin/coveralls -v
