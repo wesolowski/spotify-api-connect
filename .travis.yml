@@ -1,13 +1,10 @@
 language: php
 php:
   - 7.1
+  - 7.2
 
 git:
   depth: 1
-
-branches:
-  only:
-    - master
 
 before_script:
   - travis_retry composer self-update
@@ -17,9 +14,4 @@ script:
   - vendor/bin/phpunit
 
 after_script:
- - pwd 
- - ls -la vendor/bin
- - ls -la;
- - ls ./vendor/bin/
- - php -v
- - php vendor/bin/coveralls -v
+ - vendor/bin/php-coveralls -v
