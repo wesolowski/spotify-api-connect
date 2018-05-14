@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 docker-compose up -d
-docker-compose run --rm devtools bash -c "vendor/bin/phpunit"
+docker-compose run --rm devtools bash -c "vendor/bin/phpunit --coverage-html codecoverage"
