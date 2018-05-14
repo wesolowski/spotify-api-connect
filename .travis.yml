@@ -1,22 +1,17 @@
 language: php
 php:
   - 7.1
+  - 7.2
 
 git:
   depth: 1
 
-branches:
-  only:
-    - master
-
 before_script:
   - travis_retry composer self-update
-  - travis_retry composer install --prefer-dist --no-interaction
+  - travis_retry composer install --dev --no-interaction
 
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --coverage-clover=coverage.xml
 
 after_script:
- - php vendor/bin/coveralls -v
-
-after_success: "sbt coveralls"
+  - bash <(curl -s https://codecov.io/bash)
