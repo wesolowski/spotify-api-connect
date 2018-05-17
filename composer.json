@@ -9,7 +9,8 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "jwilsson/spotify-web-api-php": "^2.2.1"
+        "jwilsson/spotify-web-api-php": "^2.2.1",
+        "vlucas/phpdotenv": "^2.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0.3",
