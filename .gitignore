@@ -2,3 +2,5 @@
 .idea
 /phpunit.xml
 /codecoverage
+/.env
+/phpunit-7.1.5.phar

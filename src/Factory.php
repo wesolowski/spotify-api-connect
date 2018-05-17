@@ -4,47 +4,56 @@
 namespace SpotifyApiConnect;
 
 
+use Dotenv\Dotenv;
 use SpotifyApiConnect\Application\SpotifyApiAuth;
+use SpotifyApiConnect\Application\SpotifyApiAuthInterface;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\Session;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\SessionInterface;
+use SpotifyApiConnect\Domain\Model\Config;
 
 final class Factory
 {
-    /**
-     * @var SessionInterface
-     */
-    private $spotifyWebApiSession;
-
-    /**
-     * @var \SpotifyWebAPI\SpotifyWebAPI
-     */
-    private $spotifyWebAPI;
-
-    /**
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $redirectUri
-     */
-    public function __construct(string $clientId, string $clientSecret, string $redirectUri)
+    public function __construct()
     {
-
-        $this->spotifyWebApiSession = new Session(
-            $clientId,
-            $clientSecret,
-            $redirectUri
-        );
-        $this->spotifyWebAPI = new \SpotifyWebAPI\SpotifyWebAPI();
+        $envFile = __DIR__ . '/../.env';
+        if (!file_exists($envFile)) {
+            throw new \RuntimeException('Pleas create ".env"-File and fill this file with info');
+        }
+        if (null === getenv('CLIENT_ID')) {
+            (new Dotenv())->load($envFile);
+        }
     }
 
     /**
-     * @return SpotifyApiAuth
+     * @return SpotifyApiAuthInterface
      */
-    public function createSpotifyApiAuth()
+    public function createSpotifyApiAuth() : SpotifyApiAuthInterface
     {
         return new SpotifyApiAuth(
-            $this->spotifyWebApiSession
+            $this->createSpotifyWebApiPhpSession()
         );
     }
 
+    /**
+     * @return SessionInterface
+     */
+    private function createSpotifyWebApiPhpSession(): SessionInterface
+    {
+        return new Session(
+            $this->createConfig()
+        );
+    }
+
+    /**
+     * @return Config
+     */
+    private function createConfig(): Config
+    {
+        return new Config(
+            getenv('CLIENT_ID'),
+            getenv('CLIENT_SECRET'),
+            getenv('REDIRECT_URI')
+        );
+    }
 
 }
