@@ -45,7 +45,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      * @param string $userId
      * @param string $playlistId
      * @param array $options
-     * @return object
+     * @return array|object
      */
     public function getUserPlaylist(string $userId, string $playlistId, array $options = [])
     {
@@ -55,7 +55,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
     /**
      * @param string $userId
      * @param array $options
-     * @return object
+     * @return array|object
      */
     public function getUserPlaylists(string $userId, array $options = [])
     {
@@ -66,7 +66,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      * @param string $userId
      * @param $playlistId
      * @param array $options
-     * @return object
+     * @return array|object
      */
     public function getUserPlaylistTracks(string $userId, $playlistId, array $options = [])
     {
@@ -77,7 +77,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      * @param string $query
      * @param array $type
      * @param array $options
-     * @return object
+     * @return array|object
      */
     public function search(string $query, array $type, array $options = [])
     {
