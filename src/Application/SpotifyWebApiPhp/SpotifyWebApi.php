@@ -1,45 +1,95 @@
-<?php
+<?php declare(strict_types=1);
 
 
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
 use SpotifyWebAPI\SpotifyWebAPI as BaseSpotifyWebAPI;
 
-class SpotifyWebApi extends BaseSpotifyWebAPI implements SpotifyWebApiInterface
+class SpotifyWebApi implements SpotifyWebApiInterface
 {
-    public function addUserPlaylistTracks($userId, $playlistId, $tracks, $options = [])
+    /**
+     * @var BaseSpotifyWebAPI
+     */
+    private $baseSpotifyWebAPI;
+
+    public function __construct()
     {
-        return parent::addUserPlaylistTracks($userId, $playlistId, $tracks, $options);
+        $this->baseSpotifyWebAPI = new BaseSpotifyWebAPI();
     }
 
-    public function deleteUserPlaylistTracks($userId, $playlistId, $tracks, $snapshotId = '')
+    /**
+     * @param string $userId
+     * @param string $playlistId
+     * @param array $tracks
+     * @param array $options
+     * @return bool
+     */
+    public function addUserPlaylistTracks(string $userId, string $playlistId, array $tracks, array $options = [])
     {
-        return parent::deleteUserPlaylistTracks($userId, $playlistId, $tracks, $snapshotId);
+        return $this->baseSpotifyWebAPI->addUserPlaylistTracks($userId, $playlistId, $tracks, $options);
     }
 
-    public function getUserPlaylist($userId, $playlistId, $options = [])
+    /**
+     * @param string $userId
+     * @param string $playlistId
+     * @param array $tracks
+     * @param string $snapshotId
+     * @return bool|string
+     */
+    public function deleteUserPlaylistTracks(string $userId, string $playlistId, array $tracks, string $snapshotId = '')
     {
-        return parent::getUserPlaylist($userId, $playlistId, $options);
+        return $this->baseSpotifyWebAPI->deleteUserPlaylistTracks($userId, $playlistId, $tracks, $snapshotId);
     }
 
-    public function getUserPlaylists($userId, $options = [])
+    /**
+     * @param string $userId
+     * @param string $playlistId
+     * @param array $options
+     * @return object
+     */
+    public function getUserPlaylist(string $userId, string $playlistId, array $options = [])
     {
-        return parent::getUserPlaylists($userId, $options);
+        return $this->baseSpotifyWebAPI->getUserPlaylist($userId, $playlistId, $options);
     }
 
-    public function getUserPlaylistTracks($userId, $playlistId, $options = [])
+    /**
+     * @param string $userId
+     * @param array $options
+     * @return object
+     */
+    public function getUserPlaylists(string $userId, array $options = [])
     {
-        return parent::getUserPlaylistTracks($userId, $playlistId, $options);
+        return $this->baseSpotifyWebAPI->getUserPlaylists($userId, $options);
     }
 
-    public function search($query, $type, $options = [])
+    /**
+     * @param string $userId
+     * @param $playlistId
+     * @param array $options
+     * @return object
+     */
+    public function getUserPlaylistTracks(string $userId, $playlistId, array $options = [])
     {
-        return parent::search($query, $type, $options);
+        return $this->baseSpotifyWebAPI->getUserPlaylistTracks($userId, $playlistId, $options);
     }
 
-    public function setAccessToken($accessToken)
+    /**
+     * @param string $query
+     * @param array $type
+     * @param array $options
+     * @return object
+     */
+    public function search(string $query, array $type, array $options = [])
     {
-        parent::setAccessToken($accessToken);
+        return $this->baseSpotifyWebAPI->search($query, $type, $options);
+    }
+
+    /**
+     * @param string $accessToken
+     */
+    public function setAccessToken(string $accessToken)
+    {
+        $this->baseSpotifyWebAPI->setAccessToken($accessToken);
     }
 
 }

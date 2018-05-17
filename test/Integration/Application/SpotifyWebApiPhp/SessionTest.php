@@ -4,6 +4,7 @@ namespace SpotifyApiConnectTest\Integration\Application\SpotifyWebApiPhp;
 
 use PHPUnit\Framework\TestCase;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\Session;
+use SpotifyApiConnect\Domain\Model\Config;
 
 
 class SessionTest extends TestCase
@@ -16,11 +17,13 @@ class SessionTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-
-        $this->session = new Session(
+        $config = new Config(
             getenv('CLIENT_ID'),
             getenv('CLIENT_SECRET'),
             getenv('REDIRECT_URI')
+        );
+        $this->session = new Session(
+            $config
         );
     }
 

@@ -7,6 +7,7 @@ namespace SpotifyApiConnectTest\Integration\Application\SpotifyWebApiPhp;
 use PHPUnit\Framework\TestCase;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\Session;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\SpotifyWebApi;
+use SpotifyApiConnect\Domain\Model\Config;
 use SpotifyWebAPI\SpotifyWebAPIException;
 
 class SpotifyWebApiTest extends TestCase
@@ -37,10 +38,13 @@ class SpotifyWebApiTest extends TestCase
     {
         parent::setUp();
         if ($this->accessToken === null) {
-            $session = new Session(
+            $config = new Config(
                 getenv('CLIENT_ID'),
                 getenv('CLIENT_SECRET'),
                 getenv('REDIRECT_URI')
+            );
+            $session = new Session(
+                $config
             );
             $session->refreshAccessToken(getenv('REFRESH_TOKEN'));
             $this->accessToken = $session->getAccessToken();

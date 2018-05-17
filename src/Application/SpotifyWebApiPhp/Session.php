@@ -3,26 +3,41 @@
 
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
+use SpotifyApiConnect\Domain\Model\Config;
 use \SpotifyWebAPI\Session as BaseSession;
 
-class Session extends BaseSession implements SessionInterface
+class Session implements SessionInterface
 {
+    /**
+     * @var BaseSession
+     */
+    private $baseSession;
+
+    public function __construct(Config $config)
+    {
+        $this->baseSession = new BaseSession(
+            $config->getClientId(),
+            $config->getClientSecret(),
+            $config->getRedirectUri()
+        );
+    }
+
     /**
      * @param array $options
      * @return string
      */
-    public function getAuthorizeUrl($options = []) : string
+    public function getAuthorizeUrl(array $options = []) : string
     {
-        return parent::getAuthorizeUrl($options);
+        return $this->baseSession->getAuthorizeUrl($options);
     }
 
     /**
      * @param string $authorizationCode
      * @return bool
      */
-    public function requestAccessToken($authorizationCode) : bool
+    public function requestAccessToken(string $authorizationCode) : bool
     {
-        return parent::requestAccessToken($authorizationCode);
+        return $this->baseSession->requestAccessToken($authorizationCode);
     }
 
 
@@ -31,7 +46,7 @@ class Session extends BaseSession implements SessionInterface
      */
     public function getAccessToken() : string
     {
-        return parent::getAccessToken();
+        return $this->baseSession->getAccessToken();
     }
 
     /**
@@ -39,16 +54,16 @@ class Session extends BaseSession implements SessionInterface
      */
     public function getRefreshToken() : string
     {
-        return parent::getRefreshToken();
+        return $this->baseSession->getRefreshToken();
     }
 
     /**
      * @param string $refreshToken
      * @return bool
      */
-    public function refreshAccessToken($refreshToken) : bool
+    public function refreshAccessToken(string $refreshToken) : bool
     {
-        return parent::refreshAccessToken($refreshToken);
+        return $this->baseSession->refreshAccessToken($refreshToken);
     }
 
 
