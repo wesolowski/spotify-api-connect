@@ -63,14 +63,13 @@ class SpotifyWebApi implements SpotifyWebApiInterface
     }
 
     /**
-     * @param string $userId
      * @param $playlistId
      * @param array $options
      * @return array|object
      */
-    public function getUserPlaylistTracks(string $userId, $playlistId, array $options = [])
+    public function getPlaylistTracks(string $playlistId, array $options = [])
     {
-        return $this->baseSpotifyWebAPI->getUserPlaylistTracks($userId, $playlistId, $options);
+        return $this->baseSpotifyWebAPI->getPlaylistTracks($playlistId, $options);
     }
 
     /**

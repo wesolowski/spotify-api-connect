@@ -46,7 +46,7 @@ interface SpotifyWebApiInterface
      * @param array $options
      * @return object
      */
-    public function getUserPlaylistTracks(string $userId, $playlistId, array $options = []);
+    public function getPlaylistTracks(string $playlistId, array $options = []);
 
     /**
      * @param string $query

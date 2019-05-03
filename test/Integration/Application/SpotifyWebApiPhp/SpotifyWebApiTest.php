@@ -138,8 +138,7 @@ class SpotifyWebApiTest extends TestCase
         );
         $this->assertTrue($addResult);
 
-        $spotifyPlayList = $this->spotifyWebApi->getUserPlaylistTracks(
-            static::spotifyInfo['user'],
+        $spotifyPlayList = $this->spotifyWebApi->getPlaylistTracks(
             static::spotifyInfo['playlistId']
         );
 
@@ -179,8 +178,7 @@ class SpotifyWebApiTest extends TestCase
             ]
         );
         $this->assertNotEmpty($deleteResult);
-        $spotifyPlayList = $this->spotifyWebApi->getUserPlaylistTracks(
-            static::spotifyInfo['user'],
+        $spotifyPlayList = $this->spotifyWebApi->getPlaylistTracks(
             static::spotifyInfo['playlistId']
         );
 
