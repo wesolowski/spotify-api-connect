@@ -30,13 +30,12 @@ class SessionTest extends TestCase
 
     public function testGetAuthorizeUrl()
     {
-        $redirectUrl = $this->session->getAuthorizeUrl([]);
+        $redirectUrl = $this->session->getAuthorizeUrl();
 
         $this->assertNotEmpty($redirectUrl, 'authorize url from spotify is empty');
-
         $parseRedirectUrl = parse_url($redirectUrl);
         $this->assertSame('accounts.spotify.com', $parseRedirectUrl['host']);
-        $this->assertSame('/authorize/', $parseRedirectUrl['path']);
+        $this->assertSame('/authorize', $parseRedirectUrl['path']);
 
         $this->assertNotEmpty($parseRedirectUrl['query']);
 

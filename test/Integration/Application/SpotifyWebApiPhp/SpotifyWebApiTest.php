@@ -76,6 +76,7 @@ class SpotifyWebApiTest extends TestCase
 
     public function testGetUserPlaylistsNotFoundUser(): void
     {
+        $this->expectException(SpotifyWebAPIException::class);
         $spotifyPlayLists = $this->spotifyWebApi->getUserPlaylists('no-existUser_For-Unit-ttest');
         $this->assertEmpty($spotifyPlayLists->items);
         $this->assertSame(0, $spotifyPlayLists->total);
@@ -113,7 +114,8 @@ class SpotifyWebApiTest extends TestCase
         $searchResult = $this->spotifyWebApi->search(
             sprintf('track:%s artist:%s', static::spotifySong['track'], static::spotifySong['artist']), ['track']
         );
-        $this->assertSame(static::spotifySong['trackId'], $searchResult->tracks->items[0]->id);
+
+        $this->assertSame(strtolower(static::spotifySong['track']), strtolower($searchResult->tracks->items[0]->name));
     }
 
     public function testSearchNotFound()
