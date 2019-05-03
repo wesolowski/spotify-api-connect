@@ -15,6 +15,9 @@
         <whitelist>
             <directory>./src/</directory>
         </whitelist>
+        <exclude>
+            <directory>./src/Domain/DataTransferObject/*</directory>
+        </exclude>
     </filter>
 
     <logging>
