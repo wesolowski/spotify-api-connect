@@ -3,7 +3,9 @@
 
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
+use SpotifyApiConnect\Domain\DataTransferObject\PlaylistTracksDataProvider;
 use SpotifyWebAPI\SpotifyWebAPI as BaseSpotifyWebAPI;
+use SpotifyWebAPI\Request;
 
 class SpotifyWebApi implements SpotifyWebApiInterface
 {
@@ -67,9 +69,14 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      * @param array $options
      * @return array|object
      */
-    public function getPlaylistTracks(string $playlistId, array $options = [])
+    public function getPlaylistTracks(string $playlistId, array $options = []) : PlaylistTracksDataProvider
     {
-        return $this->baseSpotifyWebAPI->getPlaylistTracks($playlistId, $options);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
+        $jsonObjectResult = $this->baseSpotifyWebAPI->getPlaylistTracks($playlistId, $options);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
+        $playlistTracksDataProvider = new PlaylistTracksDataProvider();
+        $playlistTracksDataProvider->fromArray($jsonObjectResult);
+        return $playlistTracksDataProvider;
     }
 
     /**
