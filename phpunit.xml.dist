@@ -15,11 +15,11 @@
         <whitelist>
             <directory>./src/</directory>
             <exclude>
-                <directory>./src/Domain/DataTransferObject/*</directory>
+                <directory>./src/Domain/DataTransferObject</directory>
             </exclude>
         </whitelist>
-
     </filter>
+
 
     <logging>
         <log type="coverage-clover" target="build/logs/clover.xml" />
