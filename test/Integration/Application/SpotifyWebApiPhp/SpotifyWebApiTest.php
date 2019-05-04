@@ -82,21 +82,21 @@ class SpotifyWebApiTest extends TestCase
         $this->assertSame(0, $spotifyPlayLists->total);
     }
 
-    public function testGetUserPlaylist(): void
+    public function testGetPlaylist(): void
     {
-        $spotifyPlayList = $this->spotifyWebApi->getUserPlaylist(
-            static::spotifyInfo['user'],
+        $spotifyPlayList = $this->spotifyWebApi->getPlaylist(
             static::spotifyInfo['playlistId']
         );
-        $this->assertTrue(isset($spotifyPlayList->id));
-        $this->assertSame(static::spotifyInfo['playlistId'], $spotifyPlayList->id);
+        $this->assertSame(static::spotifyInfo['playlistId'], $spotifyPlayList->getId());
+        $this->assertSame(static::spotifyInfo['playlistName'], $spotifyPlayList->getName());
+        $this->assertTrue($spotifyPlayList->getPublic());
+        $this->assertSame('U2', $spotifyPlayList->getTracks()->getItems()[0]->getTrack()->getArtists()[0]->getName());
     }
 
     public function testGetNoExistUserPlaylist(): void
     {
         try {
-            $this->spotifyWebApi->getUserPlaylist(
-                static::spotifyInfo['user'],
+            $this->spotifyWebApi->getPlaylist(
                 'no-exist-PlAyList'
             );
         } catch (SpotifyWebAPIException $e) {
@@ -144,7 +144,7 @@ class SpotifyWebApiTest extends TestCase
 
         $this->assertNotEmpty($spotifyPlayList->getItems());
         $this->assertNotEmpty($spotifyPlayList->getTotal());
-        $this->assertSame(static::spotifySong['trackId'], $spotifyPlayList->getItems()[0]->getTrack()->getId());
+        $this->assertSame(static::spotifySong['trackId'], $spotifyPlayList->getItems()[1]->getTrack()->getId());
     }
 
     public function testAddUserPlaylistTracksNotExistTrackId()
@@ -170,7 +170,14 @@ class SpotifyWebApiTest extends TestCase
 
     public function testDeleteUserPlaylistTracks()
     {
-        $deleteResult = $this->spotifyWebApi->deleteUserPlaylistTracks(
+        $spotifyPlayList = $this->spotifyWebApi->getPlaylistTracks(
+            static::spotifyInfo['playlistId']
+        );
+
+        $this->assertCount(2, $spotifyPlayList->getItems());
+        $this->assertSame(2, $spotifyPlayList->getTotal());
+
+        $this->spotifyWebApi->deleteUserPlaylistTracks(
             static::spotifyInfo['user'],
             static::spotifyInfo['playlistId'],
             [
@@ -179,13 +186,13 @@ class SpotifyWebApiTest extends TestCase
                 ]
             ]
         );
-        $this->assertNotEmpty($deleteResult);
+
         $spotifyPlayList = $this->spotifyWebApi->getPlaylistTracks(
             static::spotifyInfo['playlistId']
         );
 
-        $this->assertEmpty($spotifyPlayList->getItems());
-        $this->assertEmpty($spotifyPlayList->getTotal());
+        $this->assertCount(1, $spotifyPlayList->getItems());
+        $this->assertSame(1, $spotifyPlayList->getTotal());
     }
 
     public function testDeleteUserPlaylistTracksNoExistId()

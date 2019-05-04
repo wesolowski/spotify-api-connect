@@ -14,6 +14,23 @@
         <DataElement name="total" type="int" allownull="true" />
     </DataProvider>
 
+    <DataProvider name="Playlist">
+        <DataElement name="description" type="string" allownull="true"/>
+        <DataElement name="external_urls" type="ExternalUrl" allownull="true"/>
+        <DataElement name="followers" type="Followers" allownull="true"/>
+        <DataElement name="id" type="string" allownull="true"/>
+        <DataElement name="href" type="string" allownull="true"/>
+        <DataElement name="name" type="string" allownull="true"/>
+        <DataElement name="public" type="bool" allownull="true"/>
+        <DataElement name="tracks" type="PlaylistTracks" singleton="track" allownull="true"/>
+        <DataElement name="type" type="string" allownull="true"/>
+        <DataElement name="uri" type="string" allownull="true"/>
+    </DataProvider>
+
+    <DataProvider name="Followers">
+        <DataElement name="total" type="int" allownull="true"/>
+    </DataProvider>
+
     <DataProvider name="Item">
         <DataElement name="track" type="Track" allownull="true"/>
     </DataProvider>
