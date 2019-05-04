@@ -3,7 +3,11 @@
 
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
+use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\PlaylistTracksDataProvider;
 use SpotifyWebAPI\SpotifyWebAPI as BaseSpotifyWebAPI;
+use SpotifyWebAPI\Request;
+use SpotifyWebAPI\SpotifyWebAPIException;
 
 class SpotifyWebApi implements SpotifyWebApiInterface
 {
@@ -42,14 +46,21 @@ class SpotifyWebApi implements SpotifyWebApiInterface
     }
 
     /**
-     * @param string $userId
      * @param string $playlistId
      * @param array $options
-     * @return array|object
+     * @return PlaylistDataProvider
      */
-    public function getUserPlaylist(string $userId, string $playlistId, array $options = [])
+    public function getPlaylist(string $playlistId, array $options = []): PlaylistDataProvider
     {
-        return $this->baseSpotifyWebAPI->getUserPlaylist($userId, $playlistId, $options);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
+        $jsonObjectResult = $this->baseSpotifyWebAPI->getPlaylist($playlistId, $options);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
+
+        $playlistDataProvider = new PlaylistDataProvider();
+        $playlistDataProvider->fromArray($jsonObjectResult);
+
+        return $playlistDataProvider;
+
     }
 
     /**
@@ -63,14 +74,20 @@ class SpotifyWebApi implements SpotifyWebApiInterface
     }
 
     /**
-     * @param string $userId
-     * @param $playlistId
+     * @param string $playlistId
      * @param array $options
-     * @return array|object
+     * @return PlaylistTracksDataProvider
      */
-    public function getUserPlaylistTracks(string $userId, $playlistId, array $options = [])
+    public function getPlaylistTracks(string $playlistId, array $options = []) : PlaylistTracksDataProvider
     {
-        return $this->baseSpotifyWebAPI->getUserPlaylistTracks($userId, $playlistId, $options);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
+        $jsonObjectResult = $this->baseSpotifyWebAPI->getPlaylistTracks($playlistId, $options);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
+
+        $playlistTracksDataProvider = new PlaylistTracksDataProvider();
+        $playlistTracksDataProvider->fromArray($jsonObjectResult);
+
+        return $playlistTracksDataProvider;
     }
 
     /**

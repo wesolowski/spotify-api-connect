@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<DataProviders
+    xmlns="xervice:dataprovider-01"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="xervice:dataprovider-01 http://static.xervice.online/schema/dataprovider.schema.xsd"
+>
+    <DataProvider name="PlaylistTracks">
+        <DataElement name="items" type="Item[]" singleton="item" allownull="true"/>
+        <DataElement name="limit" type="int" allownull="true" />
+        <DataElement name="next" type="int" allownull="true" />
+        <DataElement name="offset" type="int" allownull="true" />
+        <DataElement name="previous" type="int" allownull="true" />
+        <DataElement name="total" type="int" allownull="true" />
+    </DataProvider>
+
+    <DataProvider name="Playlist">
+        <DataElement name="description" type="string" allownull="true"/>
+        <DataElement name="external_urls" type="ExternalUrl" allownull="true"/>
+        <DataElement name="followers" type="Followers" allownull="true"/>
+        <DataElement name="id" type="string" allownull="true"/>
+        <DataElement name="href" type="string" allownull="true"/>
+        <DataElement name="name" type="string" allownull="true"/>
+        <DataElement name="public" type="bool" allownull="true"/>
+        <DataElement name="tracks" type="PlaylistTracks" singleton="track" allownull="true"/>
+        <DataElement name="type" type="string" allownull="true"/>
+        <DataElement name="uri" type="string" allownull="true"/>
+    </DataProvider>
+
+    <DataProvider name="Followers">
+        <DataElement name="total" type="int" allownull="true"/>
+    </DataProvider>
+
+    <DataProvider name="Item">
+        <DataElement name="track" type="Track" allownull="true"/>
+    </DataProvider>
+
+    <DataProvider name="Track">
+        <DataElement name="artists" type="Artist[]" singleton="artist" allownull="true"/>
+        <DataElement name="external_urls" type="ExternalUrl" allownull="true"/>
+        <DataElement name="id" type="string" allownull="true"/>
+        <DataElement name="uri" type="string" allownull="true"/>
+        <DataElement name="type" type="string" allownull="true"/>
+        <DataElement name="name" type="string" allownull="true"/>
+        <DataElement name="href" type="string" allownull="true"/>
+    </DataProvider>
+
+    <DataProvider name="Artist">
+        <DataElement name="external_urls" type="ExternalUrl" allownull="true"/>
+        <DataElement name="id" type="string" allownull="true"/>
+        <DataElement name="uri" type="string" allownull="true"/>
+        <DataElement name="type" type="string" allownull="true"/>
+        <DataElement name="name" type="string" allownull="true"/>
+        <DataElement name="href" type="string" allownull="true"/>
+    </DataProvider>
+
+    <DataProvider name="ExternalUrl">
+        <DataElement name="spotify" type="string" allownull="true"/>
+    </DataProvider>
+
+</DataProviders>

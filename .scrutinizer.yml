@@ -1,0 +1,19 @@
+build:
+    environment:
+        php:
+            version: "7.2"
+    project_setup:
+        before:
+            - "composer install"
+    nodes:
+        analysis:
+            cache:
+                directories:
+                - vendor/
+filter:
+    excluded_paths:
+        - 'src/Domain/DataTransferObject/*'
+        - 'vendor/*'
+    dependency_paths:
+        - 'src/Domain/DataTransferObject/*'
+        - 'vendor/*'

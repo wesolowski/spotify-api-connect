@@ -4,6 +4,8 @@
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
 
+use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
+
 interface SpotifyWebApiInterface
 {
 
@@ -26,12 +28,11 @@ interface SpotifyWebApiInterface
     public function deleteUserPlaylistTracks(string $userId, string $playlistId, array $tracks, string $snapshotId = '');
 
     /**
-     * @param string $userId
      * @param string $playlistId
      * @param array $options
-     * @return object
+     * @return PlaylistDataProvider
      */
-    public function getUserPlaylist(string $userId, string $playlistId, array $options = []);
+    public function getPlaylist(string $playlistId, array $options = []) : PlaylistDataProvider;
 
     /**
      * @param string $userId
@@ -46,7 +47,7 @@ interface SpotifyWebApiInterface
      * @param array $options
      * @return object
      */
-    public function getUserPlaylistTracks(string $userId, $playlistId, array $options = []);
+    public function getPlaylistTracks(string $playlistId, array $options = []);
 
     /**
      * @param string $query

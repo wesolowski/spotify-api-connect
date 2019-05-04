@@ -76,26 +76,27 @@ class SpotifyWebApiTest extends TestCase
 
     public function testGetUserPlaylistsNotFoundUser(): void
     {
+        $this->expectException(SpotifyWebAPIException::class);
         $spotifyPlayLists = $this->spotifyWebApi->getUserPlaylists('no-existUser_For-Unit-ttest');
         $this->assertEmpty($spotifyPlayLists->items);
         $this->assertSame(0, $spotifyPlayLists->total);
     }
 
-    public function testGetUserPlaylist(): void
+    public function testGetPlaylist(): void
     {
-        $spotifyPlayList = $this->spotifyWebApi->getUserPlaylist(
-            static::spotifyInfo['user'],
+        $spotifyPlayList = $this->spotifyWebApi->getPlaylist(
             static::spotifyInfo['playlistId']
         );
-        $this->assertTrue(isset($spotifyPlayList->id));
-        $this->assertSame(static::spotifyInfo['playlistId'], $spotifyPlayList->id);
+        $this->assertSame(static::spotifyInfo['playlistId'], $spotifyPlayList->getId());
+        $this->assertSame(static::spotifyInfo['playlistName'], $spotifyPlayList->getName());
+        $this->assertTrue($spotifyPlayList->getPublic());
+        $this->assertSame('U2', $spotifyPlayList->getTracks()->getItems()[0]->getTrack()->getArtists()[0]->getName());
     }
 
     public function testGetNoExistUserPlaylist(): void
     {
         try {
-            $this->spotifyWebApi->getUserPlaylist(
-                static::spotifyInfo['user'],
+            $this->spotifyWebApi->getPlaylist(
                 'no-exist-PlAyList'
             );
         } catch (SpotifyWebAPIException $e) {
@@ -113,7 +114,8 @@ class SpotifyWebApiTest extends TestCase
         $searchResult = $this->spotifyWebApi->search(
             sprintf('track:%s artist:%s', static::spotifySong['track'], static::spotifySong['artist']), ['track']
         );
-        $this->assertSame(static::spotifySong['trackId'], $searchResult->tracks->items[0]->id);
+
+        $this->assertSame(strtolower(static::spotifySong['track']), strtolower($searchResult->tracks->items[0]->name));
     }
 
     public function testSearchNotFound()
@@ -136,12 +138,13 @@ class SpotifyWebApiTest extends TestCase
         );
         $this->assertTrue($addResult);
 
-        $spotifyPlayList = $this->spotifyWebApi->getUserPlaylistTracks(
-            static::spotifyInfo['user'],
+        $spotifyPlayList = $this->spotifyWebApi->getPlaylistTracks(
             static::spotifyInfo['playlistId']
         );
 
-        $this->assertSame(static::spotifySong['trackId'], $spotifyPlayList->items[0]->track->id);
+        $this->assertNotEmpty($spotifyPlayList->getItems());
+        $this->assertNotEmpty($spotifyPlayList->getTotal());
+        $this->assertSame(static::spotifySong['trackId'], $spotifyPlayList->getItems()[1]->getTrack()->getId());
     }
 
     public function testAddUserPlaylistTracksNotExistTrackId()
@@ -167,7 +170,14 @@ class SpotifyWebApiTest extends TestCase
 
     public function testDeleteUserPlaylistTracks()
     {
-        $deleteResult = $this->spotifyWebApi->deleteUserPlaylistTracks(
+        $spotifyPlayList = $this->spotifyWebApi->getPlaylistTracks(
+            static::spotifyInfo['playlistId']
+        );
+
+        $this->assertCount(2, $spotifyPlayList->getItems());
+        $this->assertSame(2, $spotifyPlayList->getTotal());
+
+        $this->spotifyWebApi->deleteUserPlaylistTracks(
             static::spotifyInfo['user'],
             static::spotifyInfo['playlistId'],
             [
@@ -176,13 +186,13 @@ class SpotifyWebApiTest extends TestCase
                 ]
             ]
         );
-        $this->assertNotEmpty($deleteResult);
-        $spotifyPlayList = $this->spotifyWebApi->getUserPlaylistTracks(
-            static::spotifyInfo['user'],
+
+        $spotifyPlayList = $this->spotifyWebApi->getPlaylistTracks(
             static::spotifyInfo['playlistId']
         );
 
-        $this->assertEmpty($spotifyPlayList->items);
+        $this->assertCount(1, $spotifyPlayList->getItems());
+        $this->assertSame(1, $spotifyPlayList->getTotal());
     }
 
     public function testDeleteUserPlaylistTracksNoExistId()
