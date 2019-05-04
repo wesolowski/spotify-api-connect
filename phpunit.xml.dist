@@ -14,10 +14,11 @@
     <filter>
         <whitelist>
             <directory>./src/</directory>
+            <exclude>
+                <directory>./src/Domain/DataTransferObject/*</directory>
+            </exclude>
         </whitelist>
-        <exclude>
-            <directory>./src/Domain/DataTransferObject/*</directory>
-        </exclude>
+
     </filter>
 
     <logging>
