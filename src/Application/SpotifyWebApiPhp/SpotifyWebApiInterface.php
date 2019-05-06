@@ -1,31 +1,29 @@
 <?php
 
-
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
-
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\TrackSearchRequestDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\TracksSearchDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\UserPlaylistsDataProvider;
+use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
 
 interface SpotifyWebApiInterface
 {
-
     /**
-     * @param string $userId
      * @param string $playlistId
      * @param array $tracks
      * @param array $options
      * @return bool
      */
-    public function addUserPlaylistTracks(string $userId, string $playlistId, array $tracks, array $options = []);
+    public function addPlaylistTracks($playlistId, array $tracks, array $options = []) : bool;
 
     /**
-     * @param string $userId
      * @param string $playlistId
      * @param array $tracks
-     * @param string $snapshotId
-     * @return bool|string
+     * @return bool
      */
-    public function deleteUserPlaylistTracks(string $userId, string $playlistId, array $tracks, string $snapshotId = '');
+    public function deletePlaylistTracks(string $playlistId, array $tracks) : bool;
 
     /**
      * @param string $playlistId
@@ -35,14 +33,6 @@ interface SpotifyWebApiInterface
     public function getPlaylist(string $playlistId, array $options = []) : PlaylistDataProvider;
 
     /**
-     * @param string $userId
-     * @param array $options
-     * @return object
-     */
-    public function getUserPlaylists(string $userId, array $options = []);
-
-    /**
-     * @param string $userId
      * @param $playlistId
      * @param array $options
      * @return object
@@ -50,15 +40,18 @@ interface SpotifyWebApiInterface
     public function getPlaylistTracks(string $playlistId, array $options = []);
 
     /**
-     * @param string $query
-     * @param array $type
+     * @param string $userId
+     * @param string $playlistName
      * @param array $options
-     * @return object
+     * @return PlaylistDataProvider
+     * @throws PlaylistNotFound
      */
-    public function search(string $query, array $type, array $options = []);
+    public function getUserPlaylistByName(string $userId, string $playlistName, array $options = []): PlaylistDataProvider;
 
     /**
-     * @param string $accessToken
+     * @param TrackSearchRequestDataProvider $trackSearchRequest
+     * @param array $options
+     * @return TracksSearchDataProvider
      */
-    public function setAccessToken(string $accessToken);
+    public function searchTrack(TrackSearchRequestDataProvider $trackSearchRequest, array $options = []): TracksSearchDataProvider;
 }

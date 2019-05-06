@@ -3,11 +3,15 @@
 
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
+use SpotifyApiConnect\Domain\DataTransferObject\DeleteTrackInfoDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistTracksDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\TrackSearchRequestDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\TracksSearchDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\UserPlaylistsDataProvider;
+use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
 use SpotifyWebAPI\SpotifyWebAPI as BaseSpotifyWebAPI;
 use SpotifyWebAPI\Request;
-use SpotifyWebAPI\SpotifyWebAPIException;
 
 class SpotifyWebApi implements SpotifyWebApiInterface
 {
@@ -16,33 +20,49 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     private $baseSpotifyWebAPI;
 
-    public function __construct()
+    /**
+     * @param string $accessToken
+     */
+    public function __construct(string $accessToken)
     {
         $this->baseSpotifyWebAPI = new BaseSpotifyWebAPI();
+        $this->baseSpotifyWebAPI->setAccessToken($accessToken);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
     }
 
     /**
-     * @param string $userId
-     * @param string $playlistId
+     * @param $playlistId
      * @param array $tracks
      * @param array $options
      * @return bool
      */
-    public function addUserPlaylistTracks(string $userId, string $playlistId, array $tracks, array $options = [])
+    public function addPlaylistTracks($playlistId, array $tracks, array $options = []): bool
     {
-        return $this->baseSpotifyWebAPI->addUserPlaylistTracks($userId, $playlistId, $tracks, $options);
+        return $this->baseSpotifyWebAPI->addPlaylistTracks($playlistId, $tracks, $options);
     }
 
     /**
-     * @param string $userId
      * @param string $playlistId
-     * @param array $tracks
-     * @param string $snapshotId
-     * @return bool|string
+     * @param DeleteTrackInfoDataProvider[] $tracksInfo
+     * @return bool
      */
-    public function deleteUserPlaylistTracks(string $userId, string $playlistId, array $tracks, string $snapshotId = '')
+    public function deletePlaylistTracks(string $playlistId, array $tracksInfo): bool
     {
-        return $this->baseSpotifyWebAPI->deleteUserPlaylistTracks($userId, $playlistId, $tracks, $snapshotId);
+        $tracksToDelete = [];
+        foreach ($tracksInfo as $deleteTrackInfoDataProvider) {
+            if (!$deleteTrackInfoDataProvider instanceof DeleteTrackInfoDataProvider) {
+                throw new \RuntimeException(
+                    sprintf('tracksInfo should be instanceof class: %s', DeleteTrackInfoDataProvider::class)
+                );
+            }
+            $tracksToDelete[] = $deleteTrackInfoDataProvider->toArray();
+        }
+
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
+        $delete = (bool)$this->baseSpotifyWebAPI->deletePlaylistTracks($playlistId, $tracksToDelete);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
+
+        return $delete;
     }
 
     /**
@@ -52,25 +72,32 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     public function getPlaylist(string $playlistId, array $options = []): PlaylistDataProvider
     {
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
         $jsonObjectResult = $this->baseSpotifyWebAPI->getPlaylist($playlistId, $options);
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
 
         $playlistDataProvider = new PlaylistDataProvider();
         $playlistDataProvider->fromArray($jsonObjectResult);
 
         return $playlistDataProvider;
-
     }
 
     /**
      * @param string $userId
+     * @param string $playlistName
      * @param array $options
-     * @return array|object
+     * @return PlaylistDataProvider
+     * @throws PlaylistNotFound
      */
-    public function getUserPlaylists(string $userId, array $options = [])
+    public function getUserPlaylistByName(string $userId, string $playlistName, array $options = []): PlaylistDataProvider
     {
-        return $this->baseSpotifyWebAPI->getUserPlaylists($userId, $options);
+        $userPlaylistsDataProvider = $this->getUserPlaylists($userId, $options);
+        $playlists = $userPlaylistsDataProvider->getItems();
+        foreach ($playlists as $playlist) {
+            if (trim($playlist->getName()) === trim($playlistName)) {
+                return $playlist;
+            }
+        }
+
+        throw new PlaylistNotFound(sprintf('Playlist "%s" not found', $playlistName));
     }
 
     /**
@@ -78,11 +105,9 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      * @param array $options
      * @return PlaylistTracksDataProvider
      */
-    public function getPlaylistTracks(string $playlistId, array $options = []) : PlaylistTracksDataProvider
+    public function getPlaylistTracks(string $playlistId, array $options = []): PlaylistTracksDataProvider
     {
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
         $jsonObjectResult = $this->baseSpotifyWebAPI->getPlaylistTracks($playlistId, $options);
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
 
         $playlistTracksDataProvider = new PlaylistTracksDataProvider();
         $playlistTracksDataProvider->fromArray($jsonObjectResult);
@@ -91,22 +116,52 @@ class SpotifyWebApi implements SpotifyWebApiInterface
     }
 
     /**
-     * @param string $query
-     * @param array $type
+     * @param TrackSearchRequestDataProvider $trackSearchRequest
      * @param array $options
-     * @return array|object
+     * @return TracksSearchDataProvider
      */
-    public function search(string $query, array $type, array $options = [])
+    public function searchTrack(TrackSearchRequestDataProvider $trackSearchRequest, array $options = []): TracksSearchDataProvider
     {
-        return $this->baseSpotifyWebAPI->search($query, $type, $options);
+        $jsonObjectResult = $this->search(
+            sprintf(
+                'track:%s artist:%s',
+                $trackSearchRequest->getTrack(),
+                $trackSearchRequest->getArtist()
+            ), [
+            $trackSearchRequest->getType()
+        ],
+            $options
+        );
+
+        $tracksSearchDataProvider = new TracksSearchDataProvider();
+        $tracksSearchDataProvider->fromArray($jsonObjectResult[$trackSearchRequest->getResultType()]);
+
+        return $tracksSearchDataProvider;
     }
 
     /**
-     * @param string $accessToken
+     * @param string $query
+     * @param array $type
+     * @param array $options
+     * @return array
      */
-    public function setAccessToken(string $accessToken)
+    private function search(string $query, array $type, array $options = []): array
     {
-        $this->baseSpotifyWebAPI->setAccessToken($accessToken);
+        return (array)$this->baseSpotifyWebAPI->search($query, $type, $options);
     }
 
+    /**
+     * @param string $userId
+     * @param array $options
+     * @return UserPlaylistsDataProvider
+     */
+    private function getUserPlaylists(string $userId, array $options = []): UserPlaylistsDataProvider
+    {
+        $userPlaylistInfo = (array)$this->baseSpotifyWebAPI->getUserPlaylists($userId, $options);
+
+        $userPlaylistsDataProvider = new UserPlaylistsDataProvider();
+        $userPlaylistsDataProvider->fromArray($userPlaylistInfo);
+
+        return $userPlaylistsDataProvider;
+    }
 }
