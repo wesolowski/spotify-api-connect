@@ -96,4 +96,11 @@
         <DataElement name="id" type="string"/>
     </DataProvider>
 
+    <DataProvider name="TrackSearchRequest">
+        <DataElement name="type" type="string" default="track"/>
+        <DataElement name="resultType" type="string" default="tracks"/>
+        <DataElement name="track" type="string" />
+        <DataElement name="artist" type="string"/>
+    </DataProvider>
+
 </DataProviders>

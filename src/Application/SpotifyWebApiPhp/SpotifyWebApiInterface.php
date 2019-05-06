@@ -3,6 +3,8 @@
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\TrackSearchRequestDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\TracksSearchDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\UserPlaylistsDataProvider;
 use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
 
@@ -38,14 +40,6 @@ interface SpotifyWebApiInterface
     public function getPlaylistTracks(string $playlistId, array $options = []);
 
     /**
-     * @param string $query
-     * @param array $type
-     * @param array $options
-     * @return object
-     */
-    public function search(string $query, array $type, array $options = []);
-
-    /**
      * @param string $userId
      * @param string $playlistName
      * @param array $options
@@ -53,4 +47,11 @@ interface SpotifyWebApiInterface
      * @throws PlaylistNotFound
      */
     public function getUserPlaylistByName(string $userId, string $playlistName, array $options = []): PlaylistDataProvider;
+
+    /**
+     * @param TrackSearchRequestDataProvider $trackSearchRequest
+     * @param array $options
+     * @return TracksSearchDataProvider
+     */
+    public function searchTrack(TrackSearchRequestDataProvider $trackSearchRequest, array $options = []): TracksSearchDataProvider;
 }

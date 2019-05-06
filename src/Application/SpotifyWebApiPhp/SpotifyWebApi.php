@@ -6,6 +6,7 @@ namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 use SpotifyApiConnect\Domain\DataTransferObject\DeleteTrackInfoDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistTracksDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\TrackSearchRequestDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\TracksSearchDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\UserPlaylistsDataProvider;
 use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
@@ -113,21 +114,42 @@ class SpotifyWebApi implements SpotifyWebApiInterface
     }
 
     /**
-     * @param string $query
-     * @param array $type
+     * @param TrackSearchRequestDataProvider $trackSearchRequest
      * @param array $options
      * @return TracksSearchDataProvider
      */
-    public function search(string $query, array $type, array $options = []) : TracksSearchDataProvider
+    public function searchTrack(TrackSearchRequestDataProvider $trackSearchRequest, array $options = []): TracksSearchDataProvider
+    {
+        $jsonObjectResult = $this->search(
+            sprintf(
+                'track:%s artist:%s',
+                $trackSearchRequest->getTrack(),
+                $trackSearchRequest->getArtist()
+            ), [
+            $trackSearchRequest->getType()
+        ],
+            $options
+        );
+
+        $tracksSearchDataProvider = new TracksSearchDataProvider();
+        $tracksSearchDataProvider->fromArray($jsonObjectResult[$trackSearchRequest->getResultType()]);
+
+        return $tracksSearchDataProvider;
+    }
+
+    /**
+     * @param string $query
+     * @param array $type
+     * @param array $options
+     * @return array
+     */
+    private function search(string $query, array $type, array $options = []): array
     {
         $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
         $jsonObjectResult = $this->baseSpotifyWebAPI->search($query, $type, $options);
         $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
 
-        $tracksSearchDataProvider = new TracksSearchDataProvider();
-        $tracksSearchDataProvider->fromArray($jsonObjectResult['tracks']);
-
-        return $tracksSearchDataProvider;
+        return $jsonObjectResult;
     }
 
     /**
