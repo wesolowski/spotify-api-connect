@@ -17,13 +17,11 @@ interface SpotifyWebApiInterface
     public function addPlaylistTracks($playlistId, array $tracks, array $options = []) : bool;
 
     /**
-     * @param string $userId
      * @param string $playlistId
      * @param array $tracks
-     * @param string $snapshotId
-     * @return bool|string
+     * @return bool
      */
-    public function deleteUserPlaylistTracks(string $userId, string $playlistId, array $tracks, string $snapshotId = '');
+    public function deletePlaylistTracks(string $playlistId, array $tracks) : bool;
 
     /**
      * @param string $playlistId

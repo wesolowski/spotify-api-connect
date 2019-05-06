@@ -3,6 +3,7 @@
 
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
+use SpotifyApiConnect\Domain\DataTransferObject\DeleteTrackInfoDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistTracksDataProvider;
 use SpotifyWebAPI\SpotifyWebAPI as BaseSpotifyWebAPI;
@@ -15,6 +16,9 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     private $baseSpotifyWebAPI;
 
+    /**
+     * @param string $accessToken
+     */
     public function __construct(string $accessToken)
     {
         $this->baseSpotifyWebAPI = new BaseSpotifyWebAPI();
@@ -27,21 +31,28 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      * @param array $options
      * @return bool
      */
-    public function addPlaylistTracks($playlistId, array $tracks, array $options = []) : bool
+    public function addPlaylistTracks($playlistId, array $tracks, array $options = []): bool
     {
         return $this->baseSpotifyWebAPI->addPlaylistTracks($playlistId, $tracks, $options);
     }
 
     /**
-     * @param string $userId
      * @param string $playlistId
-     * @param array $tracks
-     * @param string $snapshotId
-     * @return bool|string
+     * @param DeleteTrackInfoDataProvider[] $tracksInfo
+     * @return bool
      */
-    public function deleteUserPlaylistTracks(string $userId, string $playlistId, array $tracks, string $snapshotId = '')
+    public function deletePlaylistTracks(string $playlistId, array $tracksInfo): bool
     {
-        return $this->baseSpotifyWebAPI->deleteUserPlaylistTracks($userId, $playlistId, $tracks, $snapshotId);
+        $tracksToDelete = [];
+        foreach ($tracksInfo as $deleteTrackInfoDataProvider) {
+            if(! $deleteTrackInfoDataProvider instanceof DeleteTrackInfoDataProvider) {
+                throw new \RuntimeException(
+                    sprintf('tracksInfo should be instanceof class: %s', DeleteTrackInfoDataProvider::class)
+                );
+            }
+            $tracksToDelete[] = $deleteTrackInfoDataProvider->toArray();
+        }
+        return (bool)$this->baseSpotifyWebAPI->deletePlaylistTracks($playlistId, $tracksToDelete);
     }
 
     /**
@@ -77,7 +88,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      * @param array $options
      * @return PlaylistTracksDataProvider
      */
-    public function getPlaylistTracks(string $playlistId, array $options = []) : PlaylistTracksDataProvider
+    public function getPlaylistTracks(string $playlistId, array $options = []): PlaylistTracksDataProvider
     {
         $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
         $jsonObjectResult = $this->baseSpotifyWebAPI->getPlaylistTracks($playlistId, $options);

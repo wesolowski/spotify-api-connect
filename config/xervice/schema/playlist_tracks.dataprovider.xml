@@ -58,4 +58,8 @@
         <DataElement name="spotify" type="string" allownull="true"/>
     </DataProvider>
 
+    <DataProvider name="DeleteTrackInfo">
+        <DataElement name="id" type="string"/>
+    </DataProvider>
+
 </DataProviders>

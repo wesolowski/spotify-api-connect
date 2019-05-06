@@ -7,6 +7,7 @@ namespace SpotifyApiConnectTest\Integration\Application\SpotifyWebApiPhp;
 use PHPUnit\Framework\TestCase;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\Session;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\SpotifyWebApi;
+use SpotifyApiConnect\Domain\DataTransferObject\DeleteTrackInfoDataProvider;
 use SpotifyApiConnect\Domain\Model\Config;
 use SpotifyWebAPI\SpotifyWebAPIException;
 
@@ -174,15 +175,15 @@ class SpotifyWebApiTest extends TestCase
         $this->assertCount(2, $spotifyPlayList->getItems());
         $this->assertSame(2, $spotifyPlayList->getTotal());
 
-        $this->spotifyWebApi->deleteUserPlaylistTracks(
-            static::spotifyInfo['user'],
+        $deleteTrack = new DeleteTrackInfoDataProvider();
+        $deleteTrack->setId(static::spotifySong['trackId']);
+
+        $result = $this->spotifyWebApi->deletePlaylistTracks(
             static::spotifyInfo['playlistId'],
-            [
-                [
-                    'id' => static::spotifySong['trackId']
-                ]
-            ]
+            [$deleteTrack]
         );
+
+        $this->assertTrue($result);
 
         $spotifyPlayList = $this->spotifyWebApi->getPlaylistTracks(
             static::spotifyInfo['playlistId']
@@ -195,14 +196,11 @@ class SpotifyWebApiTest extends TestCase
     public function testDeleteUserPlaylistTracksNoExistId()
     {
         try {
-            $this->spotifyWebApi->deleteUserPlaylistTracks(
-                static::spotifyInfo['user'],
+            $deleteTrack = new DeleteTrackInfoDataProvider();
+            $deleteTrack->setId('uniTest-Not_FOUND--ID');
+            $this->spotifyWebApi->deletePlaylistTracks(
                 static::spotifyInfo['playlistId'],
-                [
-                    [
-                        'id' => 'uniTest-Not_FOUND--ID'
-                    ]
-                ]
+                [$deleteTrack]
             );
         } catch (\SpotifyWebAPI\SpotifyWebAPIException $e) {
             $this->assertSame(
@@ -213,5 +211,14 @@ class SpotifyWebApiTest extends TestCase
         }
 
         $this->fail();
+    }
+
+    public function testDeleteUserPlaylistTracksException()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->spotifyWebApi->deletePlaylistTracks(
+            static::spotifyInfo['playlistId'],
+            ['id'=>'hahaha']
+        );
     }
 }
