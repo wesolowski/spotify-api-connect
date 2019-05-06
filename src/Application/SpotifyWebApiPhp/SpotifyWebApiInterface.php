@@ -8,15 +8,13 @@ use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
 
 interface SpotifyWebApiInterface
 {
-
     /**
-     * @param string $userId
      * @param string $playlistId
      * @param array $tracks
      * @param array $options
      * @return bool
      */
-    public function addUserPlaylistTracks(string $userId, string $playlistId, array $tracks, array $options = []);
+    public function addPlaylistTracks($playlistId, array $tracks, array $options = []) : bool;
 
     /**
      * @param string $userId
@@ -42,7 +40,6 @@ interface SpotifyWebApiInterface
     public function getUserPlaylists(string $userId, array $options = []);
 
     /**
-     * @param string $userId
      * @param $playlistId
      * @param array $options
      * @return object

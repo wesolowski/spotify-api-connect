@@ -7,7 +7,6 @@ use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistTracksDataProvider;
 use SpotifyWebAPI\SpotifyWebAPI as BaseSpotifyWebAPI;
 use SpotifyWebAPI\Request;
-use SpotifyWebAPI\SpotifyWebAPIException;
 
 class SpotifyWebApi implements SpotifyWebApiInterface
 {
@@ -22,15 +21,14 @@ class SpotifyWebApi implements SpotifyWebApiInterface
     }
 
     /**
-     * @param string $userId
-     * @param string $playlistId
+     * @param $playlistId
      * @param array $tracks
      * @param array $options
      * @return bool
      */
-    public function addUserPlaylistTracks(string $userId, string $playlistId, array $tracks, array $options = [])
+    public function addPlaylistTracks($playlistId, array $tracks, array $options = []) : bool
     {
-        return $this->baseSpotifyWebAPI->addUserPlaylistTracks($userId, $playlistId, $tracks, $options);
+        return $this->baseSpotifyWebAPI->addPlaylistTracks($playlistId, $tracks, $options);
     }
 
     /**

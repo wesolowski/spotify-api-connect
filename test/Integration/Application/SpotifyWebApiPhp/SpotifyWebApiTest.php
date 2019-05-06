@@ -52,8 +52,6 @@ class SpotifyWebApiTest extends TestCase
 
         $this->spotifyWebApi = new SpotifyWebApi();
         $this->spotifyWebApi->setAccessToken($this->accessToken);
-
-
     }
 
 
@@ -127,10 +125,9 @@ class SpotifyWebApiTest extends TestCase
         $this->assertEmpty($searchNoResult->tracks->items);
     }
 
-    public function testAddUserPlaylistTracks()
+    public function testAddPlaylistTracks()
     {
-        $addResult = $this->spotifyWebApi->addUserPlaylistTracks(
-            static::spotifyInfo['user'],
+        $addResult = $this->spotifyWebApi->addPlaylistTracks(
             static::spotifyInfo['playlistId'],
             [
                 static::spotifySong['trackId']
@@ -147,11 +144,10 @@ class SpotifyWebApiTest extends TestCase
         $this->assertSame(static::spotifySong['trackId'], $spotifyPlayList->getItems()[1]->getTrack()->getId());
     }
 
-    public function testAddUserPlaylistTracksNotExistTrackId()
+    public function testAddPlaylistTracksNotExistTrackId()
     {
         try {
-            $this->spotifyWebApi->addUserPlaylistTracks(
-                static::spotifyInfo['user'],
+            $this->spotifyWebApi->addPlaylistTracks(
                 static::spotifyInfo['playlistId'],
                 [
                     'uniTest-Not_FOUND--ID'
