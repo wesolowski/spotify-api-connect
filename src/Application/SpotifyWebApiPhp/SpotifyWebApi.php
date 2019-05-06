@@ -147,7 +147,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     private function search(string $query, array $type, array $options = []): array
     {
-        return $this->baseSpotifyWebAPI->search($query, $type, $options);
+        return (array)$this->baseSpotifyWebAPI->search($query, $type, $options);
     }
 
     /**
@@ -157,7 +157,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     private function getUserPlaylists(string $userId, array $options = []): UserPlaylistsDataProvider
     {
-        $userPlaylistInfo = $this->baseSpotifyWebAPI->getUserPlaylists($userId, $options);
+        $userPlaylistInfo = (array)$this->baseSpotifyWebAPI->getUserPlaylists($userId, $options);
 
         $userPlaylistsDataProvider = new UserPlaylistsDataProvider();
         $userPlaylistsDataProvider->fromArray($userPlaylistInfo);

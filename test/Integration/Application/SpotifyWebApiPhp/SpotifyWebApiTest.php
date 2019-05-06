@@ -119,7 +119,12 @@ class SpotifyWebApiTest extends TestCase
         $searchResult = $this->spotifyWebApi->searchTrack($trackSearchRequestDataProvider);
 
         $this->assertGreaterThan(0, $searchResult->getItems());
-        $this->assertSame(strtolower(static::spotifySong['track']), strtolower($searchResult->getItems()[0]->getName(9)));
+        $this->assertSame(
+            strtolower(static::spotifySong['track']),
+            strtolower(
+                $searchResult->getItems()[0]->getName()
+            )
+        );
     }
 
     public function testSearchTrackNotFound()
