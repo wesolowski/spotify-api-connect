@@ -5,6 +5,31 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="xervice:dataprovider-01 http://static.xervice.online/schema/dataprovider.schema.xsd"
 >
+    <DataProvider name="UserPlaylists">
+        <DataElement name="items" type="Playlist[]" singleton="item" allownull="true"/>
+        <DataElement name="limit" type="int" allownull="true" />
+        <DataElement name="next" type="int" allownull="true" />
+        <DataElement name="offset" type="int" allownull="true" />
+        <DataElement name="previous" type="int" allownull="true" />
+        <DataElement name="total" type="int" allownull="true" />
+    </DataProvider>
+
+    <DataProvider name="Playlist">
+        <DataElement name="tracks" type="PlaylistTracksInfo" allownull="true"/>
+        <DataElement name="external_urls" type="ExternalUrl" allownull="true"/>
+        <DataElement name="id" type="string" allownull="true"/>
+        <DataElement name="uri" type="string" allownull="true"/>
+        <DataElement name="type" type="string" allownull="true"/>
+        <DataElement name="name" type="string" allownull="true"/>
+        <DataElement name="href" type="string" allownull="true"/>
+    </DataProvider>
+
+    <DataProvider name="PlaylistTracksInfo">
+        <DataElement name="total" type="int" allownull="true"/>
+        <DataElement name="href" type="string" allownull="true"/>
+    </DataProvider>
+
+
     <DataProvider name="PlaylistTracks">
         <DataElement name="items" type="Item[]" singleton="item" allownull="true"/>
         <DataElement name="limit" type="int" allownull="true" />

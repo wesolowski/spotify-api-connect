@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\Session;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\SpotifyWebApi;
 use SpotifyApiConnect\Domain\DataTransferObject\DeleteTrackInfoDataProvider;
+use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
 use SpotifyApiConnect\Domain\Model\Config;
 use SpotifyWebAPI\SpotifyWebAPIException;
 
@@ -59,27 +60,23 @@ class SpotifyWebApiTest extends TestCase
 
     public function testGetUserPlaylists(): void
     {
-        $spotifyPlayLists = $this->spotifyWebApi->getUserPlaylists(static::spotifyInfo['user']);
-        $playlistId = false;
-        $items = (array)$spotifyPlayLists->items;
-        foreach ($items as $item) {
-
-            if (trim($item->name) === static::spotifyInfo['playlistName']) {
-                $playlistId = $item->id;
-                break;
-            }
-        }
-
-        $this->assertSame(static::spotifyInfo['playlistId'], $playlistId);
-        $this->assertTrue($items > 5);
+        $spotifyPlaylist = $this->spotifyWebApi->getUserPlaylistByName(
+            static::spotifyInfo['user'],
+            static::spotifyInfo['playlistName']
+        );
+        $this->assertSame(static::spotifyInfo['playlistId'], $spotifyPlaylist->getId());
     }
 
     public function testGetUserPlaylistsNotFoundUser(): void
     {
         $this->expectException(SpotifyWebAPIException::class);
-        $spotifyPlayLists = $this->spotifyWebApi->getUserPlaylists('no-existUser_For-Unit-ttest');
-        $this->assertEmpty($spotifyPlayLists->items);
-        $this->assertSame(0, $spotifyPlayLists->total);
+        $this->spotifyWebApi->getUserPlaylistByName('no-existUser_For-Unit-ttest', 'unitPlaylist');
+    }
+
+    public function testGetUserPlaylistsNotFoundPlayList(): void
+    {
+        $this->expectException(PlaylistNotFound::class);
+        $this->spotifyWebApi->getUserPlaylistByName(static::spotifyInfo['user'], 'uniTest-Not_FOUND-Playlist');
     }
 
     public function testGetPlaylist(): void

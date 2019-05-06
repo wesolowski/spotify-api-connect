@@ -1,10 +1,10 @@
 <?php
 
-
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
-
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\UserPlaylistsDataProvider;
+use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
 
 interface SpotifyWebApiInterface
 {
@@ -31,13 +31,6 @@ interface SpotifyWebApiInterface
     public function getPlaylist(string $playlistId, array $options = []) : PlaylistDataProvider;
 
     /**
-     * @param string $userId
-     * @param array $options
-     * @return object
-     */
-    public function getUserPlaylists(string $userId, array $options = []);
-
-    /**
      * @param $playlistId
      * @param array $options
      * @return object
@@ -51,4 +44,13 @@ interface SpotifyWebApiInterface
      * @return object
      */
     public function search(string $query, array $type, array $options = []);
+
+    /**
+     * @param string $userId
+     * @param string $playlistName
+     * @param array $options
+     * @return PlaylistDataProvider
+     * @throws PlaylistNotFound
+     */
+    public function getUserPlaylistByName(string $userId, string $playlistName, array $options = []): PlaylistDataProvider;
 }
