@@ -112,7 +112,8 @@ class SpotifyWebApiTest extends TestCase
             sprintf('track:%s artist:%s', static::spotifySong['track'], static::spotifySong['artist']), ['track']
         );
 
-        $this->assertSame(strtolower(static::spotifySong['track']), strtolower($searchResult->tracks->items[0]->name));
+        $this->assertGreaterThan(0, $searchResult->getItems());
+        $this->assertSame(strtolower(static::spotifySong['track']), strtolower($searchResult->getItems()[0]->getName(9)));
     }
 
     public function testSearchNotFound()
@@ -120,8 +121,8 @@ class SpotifyWebApiTest extends TestCase
         $searchNoResult = $this->spotifyWebApi->search(
             sprintf('track:%s artist:%s', 'NotFound-Track-For_UNITtest', 'NotFOundArtistForUnitTest'), ['track']
         );
-        $this->assertSame(0, $searchNoResult->tracks->total);
-        $this->assertEmpty($searchNoResult->tracks->items);
+        $this->assertSame(0, $searchNoResult->getTotal());
+        $this->assertEmpty($searchNoResult->getItems());
     }
 
     public function testAddPlaylistTracks()

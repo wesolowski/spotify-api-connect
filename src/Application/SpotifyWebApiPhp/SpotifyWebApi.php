@@ -6,6 +6,7 @@ namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 use SpotifyApiConnect\Domain\DataTransferObject\DeleteTrackInfoDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistTracksDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\TracksSearchDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\UserPlaylistsDataProvider;
 use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
 use SpotifyWebAPI\SpotifyWebAPI as BaseSpotifyWebAPI;
@@ -115,11 +116,18 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      * @param string $query
      * @param array $type
      * @param array $options
-     * @return array|object
+     * @return TracksSearchDataProvider
      */
-    public function search(string $query, array $type, array $options = [])
+    public function search(string $query, array $type, array $options = []) : TracksSearchDataProvider
     {
-        return $this->baseSpotifyWebAPI->search($query, $type, $options);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
+        $jsonObjectResult = $this->baseSpotifyWebAPI->search($query, $type, $options);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
+
+        $tracksSearchDataProvider = new TracksSearchDataProvider();
+        $tracksSearchDataProvider->fromArray($jsonObjectResult['tracks']);
+
+        return $tracksSearchDataProvider;
     }
 
     /**
