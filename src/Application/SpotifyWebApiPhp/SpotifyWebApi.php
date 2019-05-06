@@ -15,9 +15,10 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     private $baseSpotifyWebAPI;
 
-    public function __construct()
+    public function __construct(string $accessToken)
     {
         $this->baseSpotifyWebAPI = new BaseSpotifyWebAPI();
+        $this->baseSpotifyWebAPI->setAccessToken($accessToken);
     }
 
     /**
@@ -98,13 +99,4 @@ class SpotifyWebApi implements SpotifyWebApiInterface
     {
         return $this->baseSpotifyWebAPI->search($query, $type, $options);
     }
-
-    /**
-     * @param string $accessToken
-     */
-    public function setAccessToken(string $accessToken)
-    {
-        $this->baseSpotifyWebAPI->setAccessToken($accessToken);
-    }
-
 }

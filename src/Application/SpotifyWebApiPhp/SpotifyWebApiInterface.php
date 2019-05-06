@@ -53,9 +53,4 @@ interface SpotifyWebApiInterface
      * @return object
      */
     public function search(string $query, array $type, array $options = []);
-
-    /**
-     * @param string $accessToken
-     */
-    public function setAccessToken(string $accessToken);
 }

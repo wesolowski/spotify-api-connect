@@ -50,8 +50,9 @@ class SpotifyWebApiTest extends TestCase
             $this->accessToken = $session->getAccessToken();
         }
 
-        $this->spotifyWebApi = new SpotifyWebApi();
-        $this->spotifyWebApi->setAccessToken($this->accessToken);
+        $this->spotifyWebApi = new SpotifyWebApi(
+            $this->accessToken
+        );
     }
 
 
