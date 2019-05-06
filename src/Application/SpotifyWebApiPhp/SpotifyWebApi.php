@@ -27,6 +27,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
     {
         $this->baseSpotifyWebAPI = new BaseSpotifyWebAPI();
         $this->baseSpotifyWebAPI->setAccessToken($accessToken);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
     }
 
     /**
@@ -56,7 +57,12 @@ class SpotifyWebApi implements SpotifyWebApiInterface
             }
             $tracksToDelete[] = $deleteTrackInfoDataProvider->toArray();
         }
-        return (bool)$this->baseSpotifyWebAPI->deletePlaylistTracks($playlistId, $tracksToDelete);
+
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
+        $delete = (bool)$this->baseSpotifyWebAPI->deletePlaylistTracks($playlistId, $tracksToDelete);
+        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
+
+        return $delete;
     }
 
     /**
@@ -66,9 +72,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     public function getPlaylist(string $playlistId, array $options = []): PlaylistDataProvider
     {
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
         $jsonObjectResult = $this->baseSpotifyWebAPI->getPlaylist($playlistId, $options);
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
 
         $playlistDataProvider = new PlaylistDataProvider();
         $playlistDataProvider->fromArray($jsonObjectResult);
@@ -103,9 +107,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     public function getPlaylistTracks(string $playlistId, array $options = []): PlaylistTracksDataProvider
     {
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
         $jsonObjectResult = $this->baseSpotifyWebAPI->getPlaylistTracks($playlistId, $options);
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
 
         $playlistTracksDataProvider = new PlaylistTracksDataProvider();
         $playlistTracksDataProvider->fromArray($jsonObjectResult);
@@ -145,11 +147,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     private function search(string $query, array $type, array $options = []): array
     {
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
-        $jsonObjectResult = $this->baseSpotifyWebAPI->search($query, $type, $options);
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
-
-        return $jsonObjectResult;
+        return $this->baseSpotifyWebAPI->search($query, $type, $options);
     }
 
     /**
@@ -159,9 +157,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     private function getUserPlaylists(string $userId, array $options = []): UserPlaylistsDataProvider
     {
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_ASSOC);
         $userPlaylistInfo = $this->baseSpotifyWebAPI->getUserPlaylists($userId, $options);
-        $this->baseSpotifyWebAPI->setReturnType(Request::RETURN_OBJECT);
 
         $userPlaylistsDataProvider = new UserPlaylistsDataProvider();
         $userPlaylistsDataProvider->fromArray($userPlaylistInfo);
