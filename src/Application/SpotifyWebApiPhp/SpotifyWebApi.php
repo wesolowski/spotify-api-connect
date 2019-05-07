@@ -72,7 +72,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     public function getPlaylist(string $playlistId, array $options = []): PlaylistDataProvider
     {
-        $jsonObjectResult = $this->baseSpotifyWebAPI->getPlaylist($playlistId, $options);
+        $jsonObjectResult = (array)$this->baseSpotifyWebAPI->getPlaylist($playlistId, $options);
 
         $playlistDataProvider = new PlaylistDataProvider();
         $playlistDataProvider->fromArray($jsonObjectResult);
@@ -107,7 +107,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
      */
     public function getPlaylistTracks(string $playlistId, array $options = []): PlaylistTracksDataProvider
     {
-        $jsonObjectResult = $this->baseSpotifyWebAPI->getPlaylistTracks($playlistId, $options);
+        $jsonObjectResult = (array)$this->baseSpotifyWebAPI->getPlaylistTracks($playlistId, $options);
 
         $playlistTracksDataProvider = new PlaylistTracksDataProvider();
         $playlistTracksDataProvider->fromArray($jsonObjectResult);
