@@ -7,14 +7,14 @@ namespace SpotifyApiConnectTest\Integration;
 use PHPUnit\Framework\TestCase;
 use SpotifyApiConnect\Application\SpotifyApiAuthInterface;
 use SpotifyApiConnect\Factory;
+use SpotifyApiConnect\SpotifyApiConnectFacade;
 
-class FactoryTest extends TestCase
+class FactorySpotifyApiConnectFacadeTest extends TestCase
 {
     public function testCreateSpotifyApiAuth()
     {
-        $factory = new Factory();
-        $spotifyApiAuth = $factory->createSpotifyApiAuth();
-        $this->assertInstanceOf(SpotifyApiAuthInterface::class, $spotifyApiAuth);
+        $spotifyApiConnectFacade = new SpotifyApiConnectFacade();
+        $spotifyApiAuth = $spotifyApiConnectFacade->getSpotifyApiAuth();
         $this->assertNotEmpty($spotifyApiAuth->getAuthorizeUrlForPlaylistModifyPublic());
     }
 }

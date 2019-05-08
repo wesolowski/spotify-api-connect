@@ -22,7 +22,6 @@ class SessionTest extends TestCase
         );
     }
 
-
     public function testGetAuthorizeUrl()
     {
         $redirectUrl = $this->session->getAuthorizeUrl();
