@@ -1,11 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace SpotifyApiConnectTest\Integration\Application\SpotifyWebApiPhp;
 
 use PHPUnit\Framework\TestCase;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\Session;
 use SpotifyApiConnect\Domain\Model\Config;
-
 
 class SessionTest extends TestCase
 {

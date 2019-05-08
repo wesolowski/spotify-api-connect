@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
 use SpotifyApiConnect\Domain\DataTransferObject\DeleteTrackInfoDataProvider;
@@ -10,6 +9,7 @@ use SpotifyApiConnect\Domain\DataTransferObject\TrackSearchRequestDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\TracksSearchDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\UserPlaylistsDataProvider;
 use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
+use SpotifyApiConnect\Message;
 use SpotifyWebAPI\SpotifyWebAPI as BaseSpotifyWebAPI;
 use SpotifyWebAPI\Request;
 
@@ -52,7 +52,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
         foreach ($tracksInfo as $deleteTrackInfoDataProvider) {
             if (!$deleteTrackInfoDataProvider instanceof DeleteTrackInfoDataProvider) {
                 throw new \RuntimeException(
-                    sprintf('tracksInfo should be instanceof class: %s', DeleteTrackInfoDataProvider::class)
+                    sprintf(Message::ERROR_DELETE_PLAYLIST_TRACKS, DeleteTrackInfoDataProvider::class)
                 );
             }
             $tracksToDelete[] = $deleteTrackInfoDataProvider->toArray();
@@ -97,7 +97,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
             }
         }
 
-        throw new PlaylistNotFound(sprintf('Playlist "%s" not found', $playlistName));
+        throw new PlaylistNotFound(sprintf(Message::ERROR_GET_USER_PLAYLIST_BY_NAME, $playlistName));
     }
 
     /**
@@ -124,7 +124,7 @@ class SpotifyWebApi implements SpotifyWebApiInterface
     {
         $jsonObjectResult = $this->search(
             sprintf(
-                'track:%s artist:%s',
+                Message::SEARCH_TRACK,
                 $trackSearchRequest->getTrack(),
                 $trackSearchRequest->getArtist()
             ), [

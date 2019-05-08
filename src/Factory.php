@@ -1,8 +1,6 @@
-<?php
-
+<?php declare(strict_types=1);
 
 namespace SpotifyApiConnect;
-
 
 use Dotenv\Dotenv;
 use SpotifyApiConnect\Application\SpotifyApiAuth;
@@ -10,6 +8,7 @@ use SpotifyApiConnect\Application\SpotifyApiAuthInterface;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\Session;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\SessionInterface;
 use SpotifyApiConnect\Domain\Model\Config;
+use SpotifyApiConnect\Domain\Model\ConfigInterface;
 
 final class Factory
 {
@@ -34,9 +33,9 @@ final class Factory
     }
 
     /**
-     * @return Config
+     * @return ConfigInterface
      */
-    private function createConfig(): Config
+    private function createConfig(): ConfigInterface
     {
         return new Config();
     }
