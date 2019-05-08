@@ -15,7 +15,7 @@ class SpotifyApiAuthTest extends TestCase
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('getAuthorizeUrl')
-            ->willReturn($this->returnValue('getAuthorizeUrl-mock'));
+            ->willReturn('getAuthorizeUrl-mock');
 
         $spotifyApiAuth = new SpotifyApiAuth($sessionMock);
         $this->assertSame(
@@ -28,10 +28,10 @@ class SpotifyApiAuthTest extends TestCase
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('requestAccessToken')
-            ->willReturn($this->returnValue(true));
+            ->willReturn(true);
 
         $sessionMock->method('getRefreshToken')
-            ->willReturn($this->returnValue('unit-test'));
+            ->willReturn('unit-test');
 
         $spotifyApiAuth = new SpotifyApiAuth($sessionMock);
         $this->assertSame(
@@ -44,7 +44,7 @@ class SpotifyApiAuthTest extends TestCase
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('requestAccessToken')
-            ->willReturn($this->returnValue(false));
+            ->willReturn(false);
 
         try {
             $spotifyApiAuth = new SpotifyApiAuth($sessionMock);
@@ -64,10 +64,10 @@ class SpotifyApiAuthTest extends TestCase
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('refreshAccessToken')
-            ->willReturn($this->returnValue(true));
+            ->willReturn(true);
 
         $sessionMock->method('getAccessToken')
-            ->willReturn($this->returnValue('unit-test'));
+            ->willReturn('unit-test');
 
         $spotifyApiAuth = new SpotifyApiAuth($sessionMock);
         $this->assertSame(
@@ -80,7 +80,7 @@ class SpotifyApiAuthTest extends TestCase
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('refreshAccessToken')
-            ->willReturn($this->returnValue(false));
+            ->willReturn(false);
 
         try {
             $spotifyApiAuth = new SpotifyApiAuth($sessionMock);
