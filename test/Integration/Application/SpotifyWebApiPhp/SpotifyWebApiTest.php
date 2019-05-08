@@ -33,7 +33,7 @@ class SpotifyWebApiTest extends TestCase
         'trackId' => '0k9un4VZY52tvtxNhg6XLo'
     ];
 
-    protected function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 
