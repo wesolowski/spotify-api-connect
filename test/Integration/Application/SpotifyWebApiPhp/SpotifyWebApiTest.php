@@ -5,21 +5,18 @@ namespace SpotifyApiConnectTest\Integration\Application\SpotifyWebApiPhp;
 
 
 use PHPUnit\Framework\TestCase;
+use SpotifyApiConnect\Application\SpotifyApiAuthInterface;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\Session;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\SpotifyWebApi;
 use SpotifyApiConnect\Domain\DataTransferObject\DeleteTrackInfoDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\TrackSearchRequestDataProvider;
 use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
 use SpotifyApiConnect\Domain\Model\Config;
+use SpotifyApiConnect\Factory;
 use SpotifyWebAPI\SpotifyWebAPIException;
 
 class SpotifyWebApiTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $accessToken;
-
     /**
      * @var SpotifyWebApi;
      */
@@ -40,21 +37,11 @@ class SpotifyWebApiTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        if ($this->accessToken === null) {
-            $config = new Config(
-                getenv('CLIENT_ID'),
-                getenv('CLIENT_SECRET'),
-                getenv('REDIRECT_URI')
-            );
-            $session = new Session(
-                $config
-            );
-            $session->refreshAccessToken(getenv('REFRESH_TOKEN'));
-            $this->accessToken = $session->getAccessToken();
-        }
 
+        $spotifyApiAuth = (new Factory())->createSpotifyApiAuth();
+        $accessToken = $spotifyApiAuth->getAccessByRefreshToken(getenv('REFRESH_TOKEN'));
         $this->spotifyWebApi = new SpotifyWebApi(
-            $this->accessToken
+            $accessToken
         );
     }
 

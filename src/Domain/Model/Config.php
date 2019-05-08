@@ -1,44 +1,25 @@
 <?php
 
-
 namespace SpotifyApiConnect\Domain\Model;
 
+use SpotifyApiConnect\Message;
+use RuntimeException;
 
-final class Config
+final class Config implements ConfigInterface
 {
-    /**
-     * @var string
-     */
-    private $clientId;
-
-    /**
-     * @var string
-     */
-    private $clientSecret;
-
-    /**
-     * @var string
-     */
-    private $redirectUri;
-
-    /**
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $redirectUri
-     */
-    public function __construct(string $clientId, string $clientSecret, string $redirectUri)
-    {
-        $this->clientId = $clientId;
-        $this->clientSecret = $clientSecret;
-        $this->redirectUri = $redirectUri;
-    }
-
     /**
      * @return string
      */
     public function getClientId(): string
     {
-        return $this->clientId;
+        $clientId = (string)getenv('CLIENT_ID');
+        if (empty($clientId)) {
+            throw new RuntimeException(
+                sprintf(Message::ERROR_GET_ENV_VARIABLE, CLIENT_ID)
+            );
+        }
+
+        return $clientId;
     }
 
     /**
@@ -46,7 +27,14 @@ final class Config
      */
     public function getClientSecret(): string
     {
-        return $this->clientSecret;
+        $clientSecret = (string)getenv('CLIENT_SECRET');
+        if (empty($clientSecret)) {
+            throw new RuntimeException(
+                sprintf(Message::ERROR_GET_ENV_VARIABLE, CLIENT_SECRET)
+            );
+        }
+
+        return $clientSecret;
     }
 
     /**
@@ -54,10 +42,15 @@ final class Config
      */
     public function getRedirectUri(): string
     {
-        return $this->redirectUri;
+        $redirectUri = (string)getenv('REDIRECT_URI');
+        if (empty($redirectUri)) {
+            throw new RuntimeException(
+                sprintf(Message::ERROR_GET_ENV_VARIABLE, REDIRECT_URI)
+            );
+        }
+
+        return $redirectUri;
     }
-
-
 
 
 }

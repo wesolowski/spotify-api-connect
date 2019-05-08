@@ -17,13 +17,9 @@ class SessionTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $config = new Config(
-            getenv('CLIENT_ID'),
-            getenv('CLIENT_SECRET'),
-            getenv('REDIRECT_URI')
-        );
+
         $this->session = new Session(
-            $config
+            new Config()
         );
     }
 

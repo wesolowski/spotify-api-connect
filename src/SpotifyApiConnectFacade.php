@@ -4,7 +4,7 @@
 namespace SpotifyApiConnect;
 
 
-final class Facade
+final class SpotifyApiConnectFacade
 {
 
 }
