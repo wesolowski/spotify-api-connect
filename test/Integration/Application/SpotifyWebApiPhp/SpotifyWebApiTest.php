@@ -10,7 +10,7 @@ use SpotifyApiConnect\Application\SpotifyWebApiPhp\SpotifyWebApi;
 use SpotifyApiConnect\Domain\DataTransferObject\DeleteTrackInfoDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\TrackSearchRequestDataProvider;
 use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
-use SpotifyApiConnect\Factory;
+use SpotifyApiConnect\SpotifyApiConnectFactory;
 use SpotifyApiConnect\SpotifyApiConnectFacade;
 use SpotifyWebAPI\SpotifyWebAPIException;
 
@@ -37,7 +37,7 @@ class SpotifyWebApiTest extends TestCase
     {
         parent::setUp();
 
-        $spotifyApiAuth = (new SpotifyApiConnectFacade())->getSpotifyApiAuth();
+        $spotifyApiAuth = (new SpotifyApiConnectFactory())->createSpotifyApiAuth();
         $accessToken = $spotifyApiAuth->getAccessByRefreshToken(getenv('REFRESH_TOKEN'));
         $this->spotifyWebApi = new SpotifyWebApi(
             $accessToken

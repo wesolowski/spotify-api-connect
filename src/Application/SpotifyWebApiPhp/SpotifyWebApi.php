@@ -10,7 +10,7 @@ use SpotifyApiConnect\Domain\DataTransferObject\TracksSearchDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\UserPlaylistsDataProvider;
 use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
 use SpotifyApiConnect\Message;
-use SpotifyApiConnect\SpotifyWebApiPhp\SpotifyWebApiInterface;
+use SpotifyApiConnect\Application\SpotifyWebApiInterface;
 use SpotifyWebAPI\SpotifyWebAPI as BaseSpotifyWebAPI;
 use SpotifyWebAPI\Request;
 

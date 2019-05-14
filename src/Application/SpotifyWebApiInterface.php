@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace SpotifyApiConnect\SpotifyWebApiPhp;
+namespace SpotifyApiConnect\Application;
 
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\TrackSearchRequestDataProvider;

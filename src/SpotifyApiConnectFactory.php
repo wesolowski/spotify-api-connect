@@ -2,17 +2,16 @@
 
 namespace SpotifyApiConnect;
 
-use Dotenv\Dotenv;
 use SpotifyApiConnect\Application\SpotifyApiAuth;
 use SpotifyApiConnect\Application\SpotifyApiAuthInterface;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\Session;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\SessionInterface;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\SpotifyWebApi;
-use SpotifyApiConnect\Application\SpotifyWebApiPhp\SpotifyWebApiInterface;
+use SpotifyApiConnect\Application\SpotifyWebApiInterface;
 use SpotifyApiConnect\Domain\Model\Config;
 use SpotifyApiConnect\Domain\Model\ConfigInterface;
 
-final class Factory implements FactoryInterface
+final class SpotifyApiConnectFactory
 {
     /**
      * @param string $accessToken
