@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
 namespace SpotifyApiConnectTest\Unit\Application;
-
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SpotifyApiConnect\Application\SpotifyApiAuth;
@@ -11,9 +10,10 @@ use SpotifyApiConnect\Message;
 class SpotifyApiAuthTest extends TestCase
 {
 
-    public function testGetAuthorizeUrlForPlaylistModifyPublic()
+    public function testGetAuthorizeUrlForPlaylistModifyPublic() : void
     {
         $sessionMock = $this->getSessionMock();
+
         $sessionMock->method('getAuthorizeUrl')
             ->willReturn('getAuthorizeUrl-mock');
 
@@ -24,7 +24,7 @@ class SpotifyApiAuthTest extends TestCase
         );
     }
 
-    public function testGetRefreshTokenByCode()
+    public function testGetRefreshTokenByCode() : void
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('requestAccessToken')
@@ -40,7 +40,7 @@ class SpotifyApiAuthTest extends TestCase
         );
     }
 
-    public function testGetRefreshTokenByCodeWithException()
+    public function testGetRefreshTokenByCodeWithException() : void
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('requestAccessToken')
@@ -60,7 +60,7 @@ class SpotifyApiAuthTest extends TestCase
         $this->fail();
     }
 
-    public function testGetAccessByRefreshToken()
+    public function testGetAccessByRefreshToken() : void
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('refreshAccessToken')
@@ -76,7 +76,7 @@ class SpotifyApiAuthTest extends TestCase
         );
     }
 
-    public function testGetAccessByRefreshTokenWithException()
+    public function testGetAccessByRefreshTokenWithException(): void
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('refreshAccessToken')
@@ -98,18 +98,20 @@ class SpotifyApiAuthTest extends TestCase
 
     /**
      * @return MockObject
+     * @throws \ReflectionException
      */
-    protected function getSessionMock(): MockObject
+    private function getSessionMock(): MockObject
     {
-        return $this->getMockBuilder(SessionInterface::class)
+        $mockObject = $this->getMockBuilder(SessionInterface::class)
             ->setMethods([
                 'getAuthorizeUrl',
                 'getAccessToken',
                 'getRefreshToken',
                 'refreshAccessToken',
                 'requestAccessToken',
-            ])
-            ->getMock();
+            ]);
+
+        return $mockObject->getMock();
     }
 
 }

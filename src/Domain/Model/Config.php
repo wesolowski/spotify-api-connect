@@ -15,7 +15,7 @@ final class Config implements ConfigInterface
         $clientId = (string)getenv('CLIENT_ID');
         if (empty($clientId)) {
             throw new RuntimeException(
-                sprintf(Message::ERROR_GET_ENV_VARIABLE, CLIENT_ID)
+                sprintf(Message::ERROR_GET_ENV_VARIABLE, $clientId)
             );
         }
 
@@ -30,7 +30,7 @@ final class Config implements ConfigInterface
         $clientSecret = (string)getenv('CLIENT_SECRET');
         if (empty($clientSecret)) {
             throw new RuntimeException(
-                sprintf(Message::ERROR_GET_ENV_VARIABLE, CLIENT_SECRET)
+                sprintf(Message::ERROR_GET_ENV_VARIABLE, $clientSecret)
             );
         }
 
@@ -45,7 +45,7 @@ final class Config implements ConfigInterface
         $redirectUri = (string)getenv('REDIRECT_URI');
         if (empty($redirectUri)) {
             throw new RuntimeException(
-                sprintf(Message::ERROR_GET_ENV_VARIABLE, REDIRECT_URI)
+                sprintf(Message::ERROR_GET_ENV_VARIABLE, $redirectUri)
             );
         }
 

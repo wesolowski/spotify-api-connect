@@ -17,3 +17,6 @@ filter:
     dependency_paths:
         - 'src/Domain/DataTransferObject/*'
         - 'vendor/*'
+build_failure_conditions:
+    - 'elements.rating(< A).exists'
+    - 'issues.new.exists'
