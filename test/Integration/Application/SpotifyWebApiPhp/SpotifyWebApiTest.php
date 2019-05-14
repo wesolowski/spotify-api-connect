@@ -34,12 +34,10 @@ class SpotifyWebApiTest extends TestCase
     protected function setUp() : void
     {
         parent::setUp();
-
-        $spotifyApiAuth = (new SpotifyApiConnectFactory())->createSpotifyApiAuth();
+        $spotifyApiConnectFactory = new SpotifyApiConnectFactory();
+        $spotifyApiAuth = $spotifyApiConnectFactory->createSpotifyApiAuth();
         $accessToken = $spotifyApiAuth->getAccessByRefreshToken(getenv('REFRESH_TOKEN'));
-        $this->spotifyWebApi = new SpotifyWebApi(
-            $accessToken
-        );
+        $this->spotifyWebApi =  $spotifyApiConnectFactory->createSpotifyWebApi($accessToken);
     }
 
 

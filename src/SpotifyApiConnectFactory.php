@@ -11,7 +11,7 @@ use SpotifyApiConnect\Application\SpotifyWebApiInterface;
 use SpotifyApiConnect\Domain\Model\Config;
 use SpotifyApiConnect\Domain\Model\ConfigInterface;
 
-final class SpotifyApiConnectFactory
+final class SpotifyApiConnectFactory implements SpotifyApiConnectFactoryInterface
 {
     /**
      * @param string $accessToken
