@@ -2,6 +2,8 @@
 
 namespace SpotifyApiConnectTest\Unit\Application;
 
+use PHPUnit\Framework\MockObject\Builder\MethodNameMatch;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SpotifyApiConnect\Application\SpotifyApiAuth;
@@ -14,6 +16,7 @@ class SpotifyApiAuthTest extends TestCase
     public function testGetAuthorizeUrlForPlaylistModifyPublic()
     {
         $sessionMock = $this->getSessionMock();
+
         $sessionMock->method('getAuthorizeUrl')
             ->willReturn('getAuthorizeUrl-mock');
 
@@ -97,7 +100,7 @@ class SpotifyApiAuthTest extends TestCase
     }
 
     /**
-     * @return MockObject
+     * @return MockBuilder|MethodNameMatch
      */
     protected function getSessionMock(): MockObject
     {
