@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
+namespace SpotifyApiConnect\Application;
 
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\TrackSearchRequestDataProvider;
@@ -16,21 +16,21 @@ interface SpotifyWebApiInterface
      * @param array $options
      * @return bool
      */
-    public function addPlaylistTracks($playlistId, array $tracks, array $options = []) : bool;
+    public function addPlaylistTracks($playlistId, array $tracks, array $options = []): bool;
 
     /**
      * @param string $playlistId
      * @param array $tracks
      * @return bool
      */
-    public function deletePlaylistTracks(string $playlistId, array $tracks) : bool;
+    public function deletePlaylistTracks(string $playlistId, array $tracks): bool;
 
     /**
      * @param string $playlistId
      * @param array $options
      * @return PlaylistDataProvider
      */
-    public function getPlaylist(string $playlistId, array $options = []) : PlaylistDataProvider;
+    public function getPlaylist(string $playlistId, array $options = []): PlaylistDataProvider;
 
     /**
      * @param $playlistId

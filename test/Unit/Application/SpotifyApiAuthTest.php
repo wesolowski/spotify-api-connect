@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace SpotifyApiConnectTest\Unit\Application;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\Timer\RuntimeException;
 use SpotifyApiConnect\Application\SpotifyApiAuth;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\SessionInterface;
 use SpotifyApiConnect\Message;
@@ -15,7 +15,7 @@ class SpotifyApiAuthTest extends TestCase
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('getAuthorizeUrl')
-            ->will($this->returnValue('getAuthorizeUrl-mock'));
+            ->willReturn('getAuthorizeUrl-mock');
 
         $spotifyApiAuth = new SpotifyApiAuth($sessionMock);
         $this->assertSame(
@@ -28,10 +28,10 @@ class SpotifyApiAuthTest extends TestCase
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('requestAccessToken')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $sessionMock->method('getRefreshToken')
-            ->will($this->returnValue('unit-test'));
+            ->willReturn('unit-test');
 
         $spotifyApiAuth = new SpotifyApiAuth($sessionMock);
         $this->assertSame(
@@ -44,7 +44,7 @@ class SpotifyApiAuthTest extends TestCase
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('requestAccessToken')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         try {
             $spotifyApiAuth = new SpotifyApiAuth($sessionMock);
@@ -64,10 +64,10 @@ class SpotifyApiAuthTest extends TestCase
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('refreshAccessToken')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $sessionMock->method('getAccessToken')
-            ->will($this->returnValue('unit-test'));
+            ->willReturn('unit-test');
 
         $spotifyApiAuth = new SpotifyApiAuth($sessionMock);
         $this->assertSame(
@@ -80,7 +80,7 @@ class SpotifyApiAuthTest extends TestCase
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('refreshAccessToken')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         try {
             $spotifyApiAuth = new SpotifyApiAuth($sessionMock);
@@ -97,9 +97,9 @@ class SpotifyApiAuthTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit\Framework\MockObject\MockObject
+     * @return MockObject
      */
-    protected function getSessionMock(): \PHPUnit\Framework\MockObject\MockObject
+    protected function getSessionMock(): MockObject
     {
         return $this->getMockBuilder(SessionInterface::class)
             ->setMethods([

@@ -1,8 +1,6 @@
-<?php
-
+<?php declare(strict_types=1);
 
 namespace SpotifyApiConnect\Application;
-
 
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\SessionInterface;
 use SpotifyApiConnect\Message;

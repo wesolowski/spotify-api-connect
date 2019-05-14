@@ -1,9 +1,8 @@
-<?php
-
+<?php declare(strict_types=1);
 
 namespace SpotifyApiConnect\Application\SpotifyWebApiPhp;
 
-use SpotifyApiConnect\Domain\Model\Config;
+use SpotifyApiConnect\Domain\Model\ConfigInterface;
 use \SpotifyWebAPI\Session as BaseSession;
 
 class Session implements SessionInterface
@@ -13,7 +12,10 @@ class Session implements SessionInterface
      */
     private $baseSession;
 
-    public function __construct(Config $config)
+    /**
+     * @param ConfigInterface $config
+     */
+    public function __construct(ConfigInterface $config)
     {
         $this->baseSession = new BaseSession(
             $config->getClientId(),

@@ -1,33 +1,31 @@
-<?php
-
+<?php declare(strict_types=1);
 
 namespace SpotifyApiConnect;
 
-
-use Dotenv\Dotenv;
 use SpotifyApiConnect\Application\SpotifyApiAuth;
 use SpotifyApiConnect\Application\SpotifyApiAuthInterface;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\Session;
 use SpotifyApiConnect\Application\SpotifyWebApiPhp\SessionInterface;
+use SpotifyApiConnect\Application\SpotifyWebApiPhp\SpotifyWebApi;
+use SpotifyApiConnect\Application\SpotifyWebApiInterface;
 use SpotifyApiConnect\Domain\Model\Config;
+use SpotifyApiConnect\Domain\Model\ConfigInterface;
 
-final class Factory
+final class SpotifyApiConnectFactory
 {
-    public function __construct()
+    /**
+     * @param string $accessToken
+     * @return SpotifyWebApiInterface
+     */
+    public function createSpotifyWebApi(string $accessToken) : SpotifyWebApiInterface
     {
-        $envFile = __DIR__ . '/../.env';
-        if (!file_exists($envFile)) {
-            throw new \RuntimeException('Pleas create ".env"-File and fill this file with info');
-        }
-        if (null === getenv('CLIENT_ID')) {
-            (new Dotenv())->load($envFile);
-        }
+        return new SpotifyWebApi($accessToken);
     }
 
     /**
      * @return SpotifyApiAuthInterface
      */
-    public function createSpotifyApiAuth() : SpotifyApiAuthInterface
+    public function createSpotifyApiAuth(): SpotifyApiAuthInterface
     {
         return new SpotifyApiAuth(
             $this->createSpotifyWebApiPhpSession()
@@ -45,15 +43,11 @@ final class Factory
     }
 
     /**
-     * @return Config
+     * @return ConfigInterface
      */
-    private function createConfig(): Config
+    private function createConfig(): ConfigInterface
     {
-        return new Config(
-            getenv('CLIENT_ID'),
-            getenv('CLIENT_SECRET'),
-            getenv('REDIRECT_URI')
-        );
+        return new Config();
     }
 
 }
