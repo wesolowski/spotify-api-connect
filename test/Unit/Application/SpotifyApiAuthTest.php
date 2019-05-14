@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
 namespace SpotifyApiConnectTest\Unit\Application;
-
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SpotifyApiConnect\Application\SpotifyApiAuth;
@@ -11,7 +10,7 @@ use SpotifyApiConnect\Message;
 class SpotifyApiAuthTest extends TestCase
 {
 
-    public function testGetAuthorizeUrlForPlaylistModifyPublic(): void
+    public function testGetAuthorizeUrlForPlaylistModifyPublic() : void
     {
         $sessionMock = $this->getSessionMock();
 
@@ -25,7 +24,7 @@ class SpotifyApiAuthTest extends TestCase
         );
     }
 
-    public function testGetRefreshTokenByCode(): void
+    public function testGetRefreshTokenByCode() : void
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('requestAccessToken')
@@ -41,7 +40,7 @@ class SpotifyApiAuthTest extends TestCase
         );
     }
 
-    public function testGetRefreshTokenByCodeWithException(): void
+    public function testGetRefreshTokenByCodeWithException() : void
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('requestAccessToken')
@@ -61,7 +60,7 @@ class SpotifyApiAuthTest extends TestCase
         $this->fail();
     }
 
-    public function testGetAccessByRefreshToken(): void
+    public function testGetAccessByRefreshToken() : void
     {
         $sessionMock = $this->getSessionMock();
         $sessionMock->method('refreshAccessToken')
@@ -103,15 +102,16 @@ class SpotifyApiAuthTest extends TestCase
      */
     private function getSessionMock(): MockObject
     {
-        return $this->getMockBuilder(SessionInterface::class)
+        $mockObject = $this->getMockBuilder(SessionInterface::class)
             ->setMethods([
                 'getAuthorizeUrl',
                 'getAccessToken',
                 'getRefreshToken',
                 'refreshAccessToken',
                 'requestAccessToken',
-            ])
-            ->getMock();
+            ]);
+
+        return $mockObject->getMock();
     }
 
 }
