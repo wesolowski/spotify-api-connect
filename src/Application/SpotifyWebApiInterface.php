@@ -40,13 +40,11 @@ interface SpotifyWebApiInterface
     public function getPlaylistTracks(string $playlistId, array $options = []);
 
     /**
-     * @param string $userId
      * @param string $playlistName
      * @param array $options
      * @return PlaylistDataProvider
-     * @throws PlaylistNotFound
      */
-    public function getUserPlaylistByName(string $userId, string $playlistName, array $options = []): PlaylistDataProvider;
+    public function getUserPlaylistByName(string $playlistName, array $options = []): PlaylistDataProvider;
 
     /**
      * @param TrackSearchRequestDataProvider $trackSearchRequest
