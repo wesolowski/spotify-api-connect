@@ -14,6 +14,7 @@ class ConfigTest extends TestCase
         'CLIENT_ID' => null,
         'CLIENT_SECRET' => null,
         'REDIRECT_URI' => null,
+        'SPOTIFY_USERNAME' => null,
     ];
 
     /**
@@ -76,6 +77,19 @@ class ConfigTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->config->getRedirectUri();
+    }
+
+    public function testGetSpotifyUsername()
+    {
+        $envValue = 'UnitSpotifyUserName';
+        putenv('SPOTIFY_USERNAME='.$envValue);
+        $this->assertSame($envValue,$this->config->getSpotifyUsername());
+    }
+
+    public function testGetSpotifyUsernameException()
+    {
+        $this->expectException(RuntimeException::class);
+        $this->config->getSpotifyUsername();
     }
 
 }

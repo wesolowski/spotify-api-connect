@@ -18,4 +18,9 @@ interface ConfigInterface
      * @return string
      */
     public function getRedirectUri(): string;
+
+    /**
+     * @return string
+     */
+    public function getSpotifyUsername(): string;
 }
