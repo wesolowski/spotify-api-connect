@@ -44,22 +44,15 @@ class SpotifyWebApiTest extends TestCase
     public function testGetUserPlaylists(): void
     {
         $spotifyPlaylist = $this->spotifyWebApi->getUserPlaylistByName(
-            static::spotifyInfo['user'],
             static::spotifyInfo['playlistName']
         );
         $this->assertSame(static::spotifyInfo['playlistId'], $spotifyPlaylist->getId());
     }
 
-    public function testGetUserPlaylistsNotFoundUser(): void
-    {
-        $this->expectException(SpotifyWebAPIException::class);
-        $this->spotifyWebApi->getUserPlaylistByName('no-existUser_For-Unit-ttest', 'unitPlaylist');
-    }
-
     public function testGetUserPlaylistsNotFoundPlayList(): void
     {
         $this->expectException(PlaylistNotFound::class);
-        $this->spotifyWebApi->getUserPlaylistByName(static::spotifyInfo['user'], 'uniTest-Not_FOUND-Playlist');
+        $this->spotifyWebApi->getUserPlaylistByName('uniTest-Not_FOUND-Playlist');
     }
 
     public function testGetPlaylist(): void

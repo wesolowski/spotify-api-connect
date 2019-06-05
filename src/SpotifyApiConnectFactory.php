@@ -19,7 +19,10 @@ final class SpotifyApiConnectFactory implements SpotifyApiConnectFactoryInterfac
      */
     public function createSpotifyWebApi(string $accessToken) : SpotifyWebApiInterface
     {
-        return new SpotifyWebApi($accessToken);
+        return new SpotifyWebApi(
+            $accessToken,
+            $this->createConfig()
+        );
     }
 
     /**
