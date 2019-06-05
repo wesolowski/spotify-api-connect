@@ -3,10 +3,9 @@
 namespace SpotifyApiConnect\Application;
 
 use SpotifyApiConnect\Domain\DataTransferObject\PlaylistDataProvider;
+use SpotifyApiConnect\Domain\DataTransferObject\PlaylistTracksDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\TrackSearchRequestDataProvider;
 use SpotifyApiConnect\Domain\DataTransferObject\TracksSearchDataProvider;
-use SpotifyApiConnect\Domain\DataTransferObject\UserPlaylistsDataProvider;
-use SpotifyApiConnect\Domain\Exception\PlaylistNotFound;
 
 interface SpotifyWebApiInterface
 {
@@ -35,7 +34,7 @@ interface SpotifyWebApiInterface
     /**
      * @param $playlistId
      * @param array $options
-     * @return object
+     * @return PlaylistTracksDataProvider
      */
     public function getPlaylistTracks(string $playlistId, array $options = []);
 
