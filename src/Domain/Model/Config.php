@@ -73,6 +73,14 @@ final class Config implements ConfigInterface
      */
     private function get(string $name)
     {
-        return getenv($name) ?: $_ENV[$name] ?: $_SERVER[$name];
+        if(!empty(getenv($name))) {
+            return getenv($name);
+        } elseif (isset($_ENV[$name])) {
+            return $_ENV[$name];
+        } elseif (isset($_SERVER[$name])) {
+            return $_SERVER[$name];
+        }
+        
+        return false;
     }
 }
