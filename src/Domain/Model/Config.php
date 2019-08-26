@@ -12,7 +12,7 @@ final class Config implements ConfigInterface
      */
     public function getClientId(): string
     {
-        $clientId = (string)getenv('CLIENT_ID');
+        $clientId = (string)$this->get('CLIENT_ID');
         if (empty($clientId)) {
             throw new RuntimeException(
                 sprintf(Message::ERROR_GET_ENV_VARIABLE, 'CLIENT_ID')
@@ -27,7 +27,7 @@ final class Config implements ConfigInterface
      */
     public function getClientSecret(): string
     {
-        $clientSecret = (string)getenv('CLIENT_SECRET');
+        $clientSecret = (string)$this->get('CLIENT_SECRET');
         if (empty($clientSecret)) {
             throw new RuntimeException(
                 sprintf(Message::ERROR_GET_ENV_VARIABLE, 'CLIENT_SECRET')
@@ -42,7 +42,7 @@ final class Config implements ConfigInterface
      */
     public function getRedirectUri(): string
     {
-        $redirectUri = (string)getenv('REDIRECT_URI');
+        $redirectUri = (string)$this->get('REDIRECT_URI');
         if (empty($redirectUri)) {
             throw new RuntimeException(
                 sprintf(Message::ERROR_GET_ENV_VARIABLE, 'REDIRECT_URI')
@@ -57,7 +57,7 @@ final class Config implements ConfigInterface
      */
     public function getSpotifyUsername(): string
     {
-        $spotifyUsername = (string)getenv('SPOTIFY_USERNAME');
+        $spotifyUsername = (string)$this->get('SPOTIFY_USERNAME');
         if (empty($spotifyUsername)) {
             throw new RuntimeException(
                 sprintf(Message::ERROR_GET_ENV_VARIABLE, 'SPOTIFY_USERNAME')
@@ -65,5 +65,14 @@ final class Config implements ConfigInterface
         }
 
         return $spotifyUsername;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    private function get(string $name)
+    {
+        return getenv($name) ?: $_ENV[$name] ?: $_SERVER[$name];
     }
 }
