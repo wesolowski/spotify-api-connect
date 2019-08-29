@@ -43,7 +43,7 @@ class SessionTest extends TestCase
 
     public function testRefreshAccessToken()
     {
-        $this->assertTrue($this->session->refreshAccessToken(getenv('REFRESH_TOKEN')));
+        $this->assertTrue($this->session->refreshAccessToken($_ENV['REFRESH_TOKEN']));
         $this->assertNotEmpty($this->session->getAccessToken());
     }
 

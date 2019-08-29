@@ -36,7 +36,7 @@ class SpotifyWebApiTest extends TestCase
         parent::setUp();
         $spotifyApiConnectFactory = new SpotifyApiConnectFactory();
         $spotifyApiAuth = $spotifyApiConnectFactory->createSpotifyApiAuth();
-        $accessToken = $spotifyApiAuth->getAccessByRefreshToken(getenv('REFRESH_TOKEN'));
+        $accessToken = $spotifyApiAuth->getAccessByRefreshToken($_ENV['REFRESH_TOKEN']);
         $this->spotifyWebApi =  $spotifyApiConnectFactory->createSpotifyWebApi($accessToken);
     }
 

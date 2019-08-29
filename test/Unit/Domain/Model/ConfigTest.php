@@ -26,8 +26,8 @@ class ConfigTest extends TestCase
     {
         $this->config = new Config();
         foreach ($this->env as $envName => $envValue) {
-            $this->env[$envName] = getenv($envName);
-            putenv($envName.'=0');
+            $this->env[$envName] = $_ENV[$envName];
+            $_ENV[$envName] = null;
         }
         parent::setUp();
     }
@@ -35,7 +35,7 @@ class ConfigTest extends TestCase
     protected function tearDown(): void
     {
         foreach ($this->env as $envName => $envValue) {
-            putenv($envName.'='.$envValue);
+            $_ENV[$envName] = $envValue;
         }
         parent::tearDown();
     }
@@ -43,7 +43,7 @@ class ConfigTest extends TestCase
     public function testGetClientSecret()
     {
         $envValue = 'UnitSecret';
-        putenv('CLIENT_SECRET='.$envValue);
+        $_ENV['CLIENT_SECRET'] = $envValue;
         $this->assertSame($envValue,$this->config->getClientSecret());
     }
 
@@ -56,7 +56,7 @@ class ConfigTest extends TestCase
     public function testGetClientId()
     {
         $envValue = 'UnitId';
-        putenv('CLIENT_ID='.$envValue);
+        $_ENV['CLIENT_ID'] = $envValue;
         $this->assertSame($envValue,$this->config->getClientId());
     }
 
@@ -69,7 +69,7 @@ class ConfigTest extends TestCase
     public function testGetRedirectUri()
     {
         $envValue = 'UnitRedirectUri';
-        putenv('REDIRECT_URI='.$envValue);
+        $_ENV['REDIRECT_URI'] = $envValue;
         $this->assertSame($envValue,$this->config->getRedirectUri());
     }
 
@@ -82,7 +82,7 @@ class ConfigTest extends TestCase
     public function testGetSpotifyUsername()
     {
         $envValue = 'UnitSpotifyUserName';
-        putenv('SPOTIFY_USERNAME='.$envValue);
+        $_ENV['SPOTIFY_USERNAME'] = $envValue;
         $this->assertSame($envValue,$this->config->getSpotifyUsername());
     }
 
