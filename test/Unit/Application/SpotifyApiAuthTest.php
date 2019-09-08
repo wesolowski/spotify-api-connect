@@ -13,6 +13,7 @@ class SpotifyApiAuthTest extends TestCase
 
     public function testGetAuthorizeUrlForPlaylistModifyPublic(): void
     {
+        var_dump($_ENV['test'], getenv('test'));
         $sessionMock = $this->getSessionMock();
 
         $sessionMock->method('getAuthorizeUrl')

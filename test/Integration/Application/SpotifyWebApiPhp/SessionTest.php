@@ -37,7 +37,7 @@ class SessionTest extends TestCase
         parse_str($parseRedirectUrl['query'], $info);
 
         $this->assertSame('code', $info['response_type']);
-        $this->assertSame('http://localhost/', $info['redirect_uri']);
+        $this->assertSame($_ENV['REDIRECT_URI'], $info['redirect_uri']);
         $this->assertTrue(isset($info['client_id']));
     }
 

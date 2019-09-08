@@ -19,7 +19,13 @@
             </exclude>
         </whitelist>
     </filter>
-
+    <php>
+        <env name="CLIENT_ID" value="#"/>
+        <env name="CLIENT_SECRET" value="#"/>
+        <env name="REDIRECT_URI" value="#"/>
+        <env name="SPOTIFY_USERNAME" value="#"/>
+        <env name="REFRESH_TOKEN" value="#" />
+    </php>
 
     <logging>
         <log type="coverage-clover" target="build/logs/clover.xml" />
