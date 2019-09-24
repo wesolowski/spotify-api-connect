@@ -28,6 +28,7 @@ class ConfigTest extends TestCase
         foreach ($this->env as $envName => $envValue) {
             $this->env[$envName] = $_ENV[$envName];
             $_ENV[$envName] = null;
+            putenv($envName.'=0');
         }
         parent::setUp();
     }
