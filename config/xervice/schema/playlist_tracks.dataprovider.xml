@@ -8,7 +8,7 @@
     <DataProvider name="TracksSearch">
         <DataElement name="items" type="Track[]" singleton="item" allownull="true"/>
         <DataElement name="limit" type="int" allownull="true" />
-        <DataElement name="next" type="int" allownull="true" />
+        <DataElement name="next" type="string" allownull="true" />
         <DataElement name="offset" type="int" allownull="true" />
         <DataElement name="previous" type="int" allownull="true" />
         <DataElement name="total" type="int" allownull="true" />
@@ -17,7 +17,7 @@
     <DataProvider name="UserPlaylists">
         <DataElement name="items" type="Playlist[]" singleton="item" allownull="true"/>
         <DataElement name="limit" type="int" allownull="true" />
-        <DataElement name="next" type="int" allownull="true" />
+        <DataElement name="next" type="string" allownull="true" />
         <DataElement name="offset" type="int" allownull="true" />
         <DataElement name="previous" type="int" allownull="true" />
         <DataElement name="total" type="int" allownull="true" />
@@ -42,7 +42,7 @@
     <DataProvider name="PlaylistTracks">
         <DataElement name="items" type="Item[]" singleton="item" allownull="true"/>
         <DataElement name="limit" type="int" allownull="true" />
-        <DataElement name="next" type="int" allownull="true" />
+        <DataElement name="next" type="string" allownull="true" />
         <DataElement name="offset" type="int" allownull="true" />
         <DataElement name="previous" type="int" allownull="true" />
         <DataElement name="total" type="int" allownull="true" />

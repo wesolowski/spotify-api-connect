@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": ">=7.2.0",
-        "jwilsson/spotify-web-api-php": "^2.6.1",
+        "jwilsson/spotify-web-api-php": "2.10.0",
         "xervice/data-provider": "^2.3"
     },
     "require-dev": {

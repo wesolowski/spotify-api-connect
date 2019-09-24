@@ -13,7 +13,7 @@ final class PlaylistTracksDataProvider extends \Xervice\DataProvider\Business\Mo
     /** @var int */
     protected $limit;
 
-    /** @var int */
+    /** @var string */
     protected $next;
 
     /** @var int */
@@ -119,19 +119,19 @@ final class PlaylistTracksDataProvider extends \Xervice\DataProvider\Business\Mo
 
 
     /**
-     * @return int
+     * @return string
      */
-    public function getNext(): ?int
+    public function getNext(): ?string
     {
         return $this->next;
     }
 
 
     /**
-     * @param int $next
+     * @param string $next
      * @return PlaylistTracksDataProvider
      */
-    public function setNext(?int $next = null)
+    public function setNext(?string $next = null)
     {
         $this->next = $next;
 
@@ -315,7 +315,7 @@ final class PlaylistTracksDataProvider extends \Xervice\DataProvider\Business\Mo
             'name' => 'next',
             'allownull' => true,
             'default' => '',
-            'type' => 'int',
+            'type' => 'string',
             'is_collection' => false,
             'is_dataprovider' => false,
             'isCamelCase' => false,
