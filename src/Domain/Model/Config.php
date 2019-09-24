@@ -72,7 +72,11 @@ final class Config implements ConfigInterface
      * @return mixed
      */
     private function get(string $name)
-    {        
-        return $_ENV[$name];
+    {
+        if (isset($_ENV[$name])) {
+            return $_ENV[$name];
+        }
+
+        return getenv($name);
     }
 }
